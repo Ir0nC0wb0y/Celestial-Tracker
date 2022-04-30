@@ -13,6 +13,7 @@
 #define STEP_EL_C 10 // Connected pin for El motor, IN2
 #define STEP_EL_D 11 // Connected pin for El motor, IN4
 
+#define MAX_POSITION 16384
 
 #define REPORT_TIME 1000
 unsigned long next_loop = 0;
@@ -46,13 +47,30 @@ void setup() {
 
 void loop() {
 // Change direction once the motor reaches target position
-	if (Stepper_Az.distanceToGo() == 0) {
-		Stepper_Az.moveTo(-Stepper_Az.currentPosition());
-    Serial.println("Changing Az Direction");
-  }
-  if (Stepper_El.distanceToGo() == 0) {
-		Stepper_El.moveTo(-Stepper_El.currentPosition());
-    Serial.println("Changing El Direction");
+	if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0) {
+    delay(1000);
+    // Create new positions
+    int Az_pos_last = Stepper_Az.currentPosition();
+    int El_pos_last = Stepper_El.currentPosition();
+    int Az_pos_new = random(-MAX_POSITION,MAX_POSITION);
+    int El_pos_new = random(-MAX_POSITION,MAX_POSITION);
+    Stepper_Az.moveTo(Az_pos_new);
+    Stepper_El.moveTo(El_pos_new);
+    // Calculate Speeds
+    int Az_speed = 500;
+    int El_speed = 500;
+    /*int Az_move = Az_pos_new - Az_pos_last;
+    int El_move = El_pos_new - El_pos_last;
+    if (abs(Az_move) > abs(El_move)) {
+      Az_speed
+    } else {
+
+    }*/
+    Stepper_Az.setSpeed(Az_speed);
+    Stepper_El.setSpeed(El_speed);
+
+
+    Serial.print("Changing to new positions (Az,EL): "); Serial.print(Az_pos_new); Serial.print(" , "); Serial.println(El_pos_new);
   }
 
   if ( millis() >= next_loop ) {
