@@ -30,15 +30,15 @@ void setup() {
     Serial.print("Setting up Az motor");
     Stepper_Az.setMaxSpeed(1000.0);
     Stepper_Az.setAcceleration(4000);
-    Stepper_Az.setSpeed(1000);
-    Stepper_Az.moveTo(2000);
+    //Stepper_Az.setSpeed(1000);
+    Stepper_Az.moveTo(0);
     Serial.println(".....Success!");
     // Elevation
     Serial.print("Setting up El motor");
     Stepper_El.setMaxSpeed(1000.0);
     Stepper_El.setAcceleration(4000);
-    Stepper_El.setSpeed(1000);
-    Stepper_El.moveTo(2000);
+    //Stepper_El.setSpeed(1000);
+    Stepper_El.moveTo(0);
     Serial.println(".....Success!");
 
   // Homing
@@ -50,27 +50,25 @@ void loop() {
 	if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0) {
     delay(1000);
     // Create new positions
-    int Az_pos_last = Stepper_Az.currentPosition();
-    int El_pos_last = Stepper_El.currentPosition();
-    int Az_pos_new = random(-MAX_POSITION,MAX_POSITION);
-    int El_pos_new = random(-MAX_POSITION,MAX_POSITION);
+    //int Az_pos_last = Stepper_Az.currentPosition();
+    //int El_pos_last = Stepper_El.currentPosition();
+    int Az_pos_new = random(-MAX_POSITION/2,MAX_POSITION/2);
+    int El_pos_new = Az_pos_new + random(-MAX_POSITION/2,MAX_POSITION/2);
     Stepper_Az.moveTo(Az_pos_new);
     Stepper_El.moveTo(El_pos_new);
     // Calculate Speeds
     int Az_speed = 500;
-    int El_speed = 500;
-    /*int Az_move = Az_pos_new - Az_pos_last;
-    int El_move = El_pos_new - El_pos_last;
-    if (abs(Az_move) > abs(El_move)) {
-      Az_speed
-    } else {
-
-    }*/
-    Stepper_Az.setSpeed(Az_speed);
-    Stepper_El.setSpeed(El_speed);
+    int El_speed = 500 * abs((float)El_pos_new/(float)Az_pos_new);
+    if ( El_speed > 1000) {
+      Az_speed = 500*(1000/(float)El_speed);
+      El_speed = 1000;
+    }
+    Stepper_Az.setMaxSpeed(Az_speed);
+    Stepper_El.setMaxSpeed(El_speed);
 
 
     Serial.print("Changing to new positions (Az,EL): "); Serial.print(Az_pos_new); Serial.print(" , "); Serial.println(El_pos_new);
+    Serial.print("Motor speeds (Az,El): "); Serial.print(Az_speed); Serial.print(" , "); Serial.println(El_speed);
   }
 
   if ( millis() >= next_loop ) {
