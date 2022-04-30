@@ -2,6 +2,8 @@
 //#include <WiFiManager.h>
 #include <AccelStepper.h>
 
+#include "Move.h"
+
 #define FULLSTEP 4
 #define HALFSTEP 8
 #define STEP_AZ_A 16 // Connected pin for Az motor, IN1
@@ -25,6 +27,8 @@ unsigned long next_loop = 0;
 
 AccelStepper Stepper_Az(HALFSTEP,STEP_AZ_A,STEP_AZ_B,STEP_AZ_C,STEP_AZ_D);
 AccelStepper Stepper_El(HALFSTEP,STEP_EL_A,STEP_EL_B,STEP_EL_C,STEP_EL_D);
+
+Position Pointer;
 
 void setup() {
 
@@ -54,6 +58,7 @@ void loop() {
 // Change direction once the motor reaches target position
 	if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0) {
     delay(1000);
+    /*
     // Create new positions
     int Az_pos_last = Stepper_Az.currentPosition();
     int El_pos_last = Stepper_El.currentPosition();
@@ -72,10 +77,29 @@ void loop() {
     }
     Stepper_Az.setMaxSpeed(Az_speed);
     Stepper_El.setMaxSpeed(El_speed);
-
-
+    
     Serial.print("Changing to new positions (Az,EL): "); Serial.print(Az_pos_new); Serial.print(" , "); Serial.println(El_pos_new);
     Serial.print("Az Move, El Move, Az Speed, El Speed: "); Serial.print(Az_move); Serial.print(" , "); Serial.print(El_move); Serial.print(" , "); Serial.print(Az_speed); Serial.print(" , "); Serial.println(El_speed);
+    */
+   
+  // Move Random Angle (not go to)
+  Stepper_Az.setCurrentPosition(0);
+  Stepper_El.setCurrentPosition(0);
+  int az_angle = random(-90,90);
+  int el_angle = random(-90,90);
+  Pointer.MoveDirect(az_angle,el_angle);
+  Stepper_Az.moveTo(Pointer.getStepsAz());
+  Stepper_El.moveTo(Pointer.getStepsEl());
+  Stepper_Az.setMaxSpeed(Pointer.getSpeedAz());
+  Stepper_El.setMaxSpeed(Pointer.getSpeedEl());
+  Serial.print("Az Angle, El Angle, Az Steps, El Steps, Az Speed, El Speed: ");
+  Serial.print(az_angle); Serial.print(" , ");
+  Serial.print(el_angle); Serial.print(" , ");
+  Serial.print(Pointer.getStepsAz()); Serial.print(" , ");
+  Serial.print(Pointer.getStepsEl()); Serial.print(" , ");
+  Serial.print(Pointer.getSpeedAz()); Serial.print(" , ");
+  Serial.print(Pointer.getSpeedEl()); Serial.println();
+
   }
 
   if ( millis() >= next_loop ) {
