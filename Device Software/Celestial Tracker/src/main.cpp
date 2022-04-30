@@ -3,6 +3,7 @@
 #include <AccelStepper.h>
 
 #define FULLSTEP 4
+#define HALFSTEP 8
 #define STEP_AZ_A 16 // Connected pin for Az motor, IN1
 #define STEP_AZ_B 17 // Connected pin for Az motor, IN3
 #define STEP_AZ_C 18 // Connected pin for Az motor, IN2
@@ -15,12 +16,11 @@
 
 #define REPORT_TIME 1000
 
-AccelStepper Stepper_Az(FULLSTEP,STEP_AZ_A,STEP_AZ_B,STEP_AZ_C,STEP_AZ_D);
-AccelStepper Stepper_El(FULLSTEP,STEP_EL_A,STEP_EL_B,STEP_EL_C,STEP_EL_D);
+AccelStepper Stepper_Az(HALFSTEP,STEP_AZ_A,STEP_AZ_B,STEP_AZ_C,STEP_AZ_D);
+AccelStepper Stepper_El(HALFSTEP,STEP_EL_A,STEP_EL_B,STEP_EL_C,STEP_EL_D);
 
 void setup() {
   Serial.begin(115200);
-
   // Setup Steppers
   Serial.print("Setting up motors");
     // Azimuth
