@@ -19,14 +19,14 @@ void Position::MoveNearest(float new_Az, float new_El) {
 void Position::MoveDirect(float move_Az, float move_El) {
   // Determine Steps
   _steps_Az = move_Az * STEPS_PER_DEGREE;
-  _steps_El = move_El * STEPS_PER_DEGREE + _steps_Az;
+  _steps_El = move_El * STEPS_PER_DEGREE - _steps_Az;
 
   // Determine Speed
   _speed_Az = BASE_SPEED;
   _speed_El = BASE_SPEED * abs((float)_steps_El / (float)_steps_Az);
   if ( _speed_El > MAX_SPEED) {
-    _speed_Az = BASE_SPEED * (MAX_SPEED/(float)_speed_El);
-    _speed_El = MAX_SPEED;
+    _speed_Az = BASE_SPEED * (BASE_SPEED/(float)_speed_El);
+    _speed_El = BASE_SPEED;
   }
 
 }

@@ -57,7 +57,7 @@ void setup() {
 void loop() {
 // Change direction once the motor reaches target position
 	if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0) {
-    delay(1000);
+    //delay(1000);
     /*
     // Create new positions
     int Az_pos_last = Stepper_Az.currentPosition();
@@ -85,8 +85,8 @@ void loop() {
   // Move Random Angle (not go to)
   Stepper_Az.setCurrentPosition(0);
   Stepper_El.setCurrentPosition(0);
-  int az_angle = random(-90,90);
-  int el_angle = random(-90,90);
+  int az_angle = random(-36,36) * 5; //random(-90,90);
+  int el_angle = random(-36,36) * 5;
   Pointer.MoveDirect(az_angle,el_angle);
   Stepper_Az.moveTo(Pointer.getStepsAz());
   Stepper_El.moveTo(Pointer.getStepsEl());
