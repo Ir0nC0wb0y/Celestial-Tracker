@@ -140,7 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Celestial_Tracker.cpp" />
-    <ClCompile Include="Nearest_Approach_Angle.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Celestial_Tracker.h" />

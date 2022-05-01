@@ -37,12 +37,12 @@ void CelestialTracker::update(float satLLA[3], float trkDir[2], float cmdDir[2])
 }
 
 void CelestialTracker::ecef2enu(float latDeg, float lonDeg, float dcmEcefToEnu[3][3]) {
-    // Trigonometry
-    float sinLat = sin(latDeg * D2R);
-    float sinLon = sin(lonDeg * D2R);
+    // Trig Functions
+    float sinLat = sin(latDeg * CT_D2R);
+    float sinLon = sin(lonDeg * CT_D2R);
 
-    float cosLat = cos(latDeg * D2R);
-    float cosLon = cos(lonDeg * D2R);
+    float cosLat = cos(latDeg * CT_D2R);
+    float cosLon = cos(lonDeg * CT_D2R);
 
     // ECEF To ENU Direction Cosine Matrix
     dcmEcefToEnu[0][0] = -sinLon;
@@ -61,22 +61,17 @@ void CelestialTracker::ecef2enu(float latDeg, float lonDeg, float dcmEcefToEnu[3
 }
 
 void CelestialTracker::lla2ecef(float latDeg, float lonDeg, float altFt, float posEcef[3]) {
-    // WGS84 Constants
-    float radius = 20925646.32537562f;     // earth major radius [ft]
-    float ellip  = 1.0f / 298.25722356f;   // earth ellipticity
-    float ecc2   = ellip * (2.0f - ellip); // earth eccentricity squared
+    // Trig Functions
+    float sinLat = sin(latDeg * CT_D2R);
+    float sinLon = sin(lonDeg * CT_D2R);
 
-    // Trigonometry
-    float sinLat = sin(latDeg * D2R);
-    float sinLon = sin(lonDeg * D2R);
-
-    float cosLat = cos(latDeg * D2R);
-    float cosLon = cos(lonDeg * D2R);
+    float cosLat = cos(latDeg * CT_D2R);
+    float cosLon = cos(lonDeg * CT_D2R);
 
     // Radii of Curvature
-    float r0 = radius / sqrt(1.0f - (ecc2 * sinLat * sinLat)); // normal radius of curvature
+    float r0 = CT_EARTH_RADIUS_FT / sqrt(1.0f - (CT_EARTH_ECC2 * sinLat * sinLat)); // normal radius of curvature
     float r1 = r0 + altFt;
-    float r2 = r0 * (1.0f - ecc2) + altFt; // meridian radius of curvature
+    float r2 = r0 * (1.0f - CT_EARTH_ECC2) + altFt; // meridian radius of curvature
 
     // ECEF Coordinates
     posEcef[0] = -r1 * (-cosLon * cosLat);
@@ -113,11 +108,11 @@ void CelestialTracker::calcCmdDir() {
     float cost1, cost2 = 0.0f;
 
     // Extract azimuth and elevation
-    azSat = _satDir[0] * D2R; // radians
-    elSat = _satDir[1] * D2R; // radians
+    azSat = _satDir[0] * CT_D2R; // radians
+    elSat = _satDir[1] * CT_D2R; // radians
 
-    azTrk = _trkDir[0] * D2R; // radians
-    elTrk = _trkDir[1] * D2R; // radians
+    azTrk = _trkDir[0] * CT_D2R; // radians
+    elTrk = _trkDir[1] * CT_D2R; // radians
 
     // Calculate satellite direction vector
     sinAz = sin(azSat);
@@ -134,20 +129,20 @@ void CelestialTracker::calcCmdDir() {
     az1 = atan2(uSatX, uSatY);      // radians
     el1 = asin(uSatZ);              // radians
 
-    az2 = (float)fmod((az1 - PI) * R2D, 360.0) * D2R; // radians
-    el2 = (float)fmod((PI - el1) * R2D, 360.0) * D2R; // radians
+    az2 = (float)fmod((az1 - CT_PI) * CT_R2D, 360.0) * CT_D2R; // radians
+    el2 = (float)fmod((CT_PI - el1) * CT_R2D, 360.0) * CT_D2R; // radians
 
     // Compute nearest approach angles
     cost1 = fabs(az1 - azTrk) + fabs(el1 - elTrk);
     cost2 = fabs(az2 - azTrk) + fabs(el2 - elTrk);
 
     if (cost1 < cost2) {
-        azCmd = az1 * R2D; // degrees
-        elCmd = el1 * R2D; // degrees
+        azCmd = az1 * CT_R2D; // degrees
+        elCmd = el1 * CT_R2D; // degrees
     }
     else {
-        azCmd = az2 * R2D; // degrees
-        elCmd = el2 * R2D; // degrees
+        azCmd = az2 * CT_R2D; // degrees
+        elCmd = el2 * CT_R2D; // degrees
     }
 
     _cmdDir[0] = azCmd;

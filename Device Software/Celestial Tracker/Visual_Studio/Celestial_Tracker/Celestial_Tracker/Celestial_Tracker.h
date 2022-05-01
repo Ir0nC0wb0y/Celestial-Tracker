@@ -1,16 +1,18 @@
 #ifndef CELESTIAL_TRACKER_H
 #define CELESTIAL_TRACKER_H
 
+#define CT_PI              3.14159265f        // pi
+#define CT_D2R             0.01745329f        // degrees to radians
+#define CT_R2D             57.29577951f       // radians to degrees
+#define CT_EARTH_RADIUS_FT 20925646.32537562f // earth major radius, ft
+#define CT_EARTH_ECC2      0.00669438f        // earth eccentricity squared
+
 class CelestialTracker {
 public:
     CelestialTracker(float[3]);
     ~CelestialTracker();
 
     void update(float[3], float[2], float[2]);
-
-    float PI  = 3.14159265f;
-    float D2R = 0.01745329f;
-    float R2D = 57.29577951f;
 
 private:
     void ecef2enu(float, float, float[3][3]);
