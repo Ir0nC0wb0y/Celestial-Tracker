@@ -3,11 +3,9 @@
 
 void getDirectionCommands(float[2], float[2], float[2]);
 
-
 float satDir[2] = { 0.0f };
 float trkDir[2] = { 0.0f };
 float cmdDir[2] = { 0.0f };
-
 
 int main(){
 
@@ -15,10 +13,10 @@ int main(){
     float azTrk, elTrk = 0.0f;
 
     azSat = 180.0; // ISS direction, degrees
-    elSat = 60.0;
+    elSat = 45.0;
 
     azTrk = 0.0;   // Tracker direction, degrees
-    elTrk = 45.0;
+    elTrk = 30.0;
 
     satDir[0] = azSat;
     satDir[1] = elSat;
@@ -77,7 +75,7 @@ void getDirectionCommands(float satDir[2], float trkDir[2], float cmdDir[2]){
     az1 = atan2(uSatX, uSatY);      // radians
     el1 = asin(uSatZ);              // radians
 
-    az2 = (float)fmod((az1 + PI) * R2D, 360.0) * D2R; // radians
+    az2 = (float)fmod((az1 - PI) * R2D, 360.0) * D2R; // radians
     el2 = (float)fmod((PI - el1) * R2D, 360.0) * D2R; // radians
 
     // Compute nearest approach angles
@@ -85,16 +83,16 @@ void getDirectionCommands(float satDir[2], float trkDir[2], float cmdDir[2]){
     cost2 = fabs(az2 - azTrk) + fabs(el2 - elTrk);
 
     if (cost1 < cost2) {
-        azCmd = az1;
-        elCmd = el1;
+        azCmd = az1 * R2D; // degrees
+        elCmd = el1 * R2D; // degrees
     }
     else {
-        azCmd = az2;
-        elCmd = el2;
+        azCmd = az2 * R2D; // degrees
+        elCmd = el2 * R2D; // degrees
     }
 
-    cmdDir[0] = azCmd * R2D; // degrees
-    cmdDir[1] = elCmd * R2D; // degrees
+    cmdDir[0] = azCmd;
+    cmdDir[1] = elCmd;
 
     return;
 }
