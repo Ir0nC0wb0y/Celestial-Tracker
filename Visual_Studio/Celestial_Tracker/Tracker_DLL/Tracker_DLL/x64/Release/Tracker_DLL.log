@@ -1,0 +1,10 @@
+﻿  CelestialTracker.cpp
+  dllmain.cpp
+  TrackerDLL.cpp
+  pch.cpp
+     Creating library C:\Users\austi\OneDrive\Documents\GitHub\Celestial-Tracker\Visual_Studio\Celestial_Tracker\Tracker_DLL\x64\Release\Tracker_DLL.lib and object C:\Users\austi\OneDrive\Documents\GitHub\Celestial-Tracker\Visual_Studio\Celestial_Tracker\Tracker_DLL\x64\Release\Tracker_DLL.exp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 2 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Tracker_DLL.vcxproj -> C:\Users\austi\OneDrive\Documents\GitHub\Celestial-Tracker\Visual_Studio\Celestial_Tracker\Tracker_DLL\x64\Release\Tracker_DLL.dll
