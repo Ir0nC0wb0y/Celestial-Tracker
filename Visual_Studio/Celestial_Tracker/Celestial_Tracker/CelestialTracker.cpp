@@ -1,47 +1,108 @@
-
+//////////////////////////////////////////////////////////////////////////////////
+// @file: CelestialTracker.cpp
+//
+// @brief: Celestial Tracker algorithm source
+//
+// @details:
+//
+// @ingroup: Celestial Tracker
+//
+// @author: Austin M. Ottaway
+//////////////////////////////////////////////////////////////////////////////////
+//********************************************************************************
+// Include Files
 #include <cmath>
 #include "CelestialTracker.h"
 
+// Macro Definitions                                                            
+
+
+// Global Variables
+
+
+//********************************************************************************
+
+//------------------------------------------------------------
+// function: CelestialTracker::CelestialTracker
+//
+// brief: CelestialTracker constructor
+//
+// details:
+//------------------------------------------------------------
 CelestialTracker::CelestialTracker(float trkLLA[3]) {
+    // Initialize Tracker LLA
+    _trkLatDeg = trkLLA[0]; // tracker latitude, deg
+    _trkLonDeg = trkLLA[1]; // tracker longitude, deg
+    _trkAltFt  = trkLLA[2]; // tracker altitude, ft
 
-    _trkLatDeg = trkLLA[0];
-    _trkLonDeg = trkLLA[1];
-    _trkAltFt  = trkLLA[2];
-
+    // Initialize Tracker Position ECEF, ft
     lla2ecef(_trkLatDeg, _trkLonDeg, _trkAltFt, _trkPosEcef);
 
     return;
 }
 
-void CelestialTracker::update(float satLLA[3], float trkDir[2], float cmdDir[2]){
- 
-    _satLatDeg = satLLA[0];
-    _satLonDeg = satLLA[1];
-    _satAltFt  = satLLA[2];
+//------------------------------------------------------------
+// function: CelestialTracker::update
+//
+// brief:
+//
+// details:
+//------------------------------------------------------------
+void CelestialTracker::update(float satLLA[3], float trkDir[2], float cmdDir[2]) {
+    // Update Satellite LLA
+    _satLatDeg = satLLA[0]; // tracker latitude, deg
+    _satLonDeg = satLLA[1]; // tracker longitude, deg
+    _satAltFt  = satLLA[2]; // tracker altitude, ft
 
-    _trkDir[0] = trkDir[0];
-    _trkDir[1] = trkDir[1];
+    // Update Tracker Direction
+    _trkDir[0] = trkDir[0]; // tracker azimuth, deg
+    _trkDir[1] = trkDir[1]; // tracker elevation, deg
 
+    // Update Satellite Direction
     calcSatDir();
+
+    // Update Commanded Direction (where tracker needs to go)
     calcCmdDir();
 
-    cmdDir[0] = _cmdDir[0];
-    cmdDir[1] = _cmdDir[1];
+    cmdDir[0] = _cmdDir[0]; // commanded azimuth, deg
+    cmdDir[1] = _cmdDir[1]; // commanded elevation, deg
 
     return;
 }
 
+//------------------------------------------------------------
+// function: CelestialTracker::getSatAzDeg
+//
+// brief:
+//
+// details:
+//------------------------------------------------------------
 float CelestialTracker::getSatAzDeg() const {
-    return _satDir[0];
+    return _satDir[0]; // output sat azimuth, deg
 }
 
-
+//------------------------------------------------------------
+// function: CelestialTracker::getSatElDeg
+//
+// brief:
+//
+// details:
+//------------------------------------------------------------
 float CelestialTracker::getSatElDeg() const {
-    return _satDir[1];
+    return _satDir[1]; // output sat elevation, deg
 }
 
-void CelestialTracker::multiply33x31(float out31[3], float in33[3][3], float in31[3])
-{
+//------------------------------------------------------------
+// function: CelestialTracker::multiply33x31
+//
+// brief:
+//
+// details:
+//------------------------------------------------------------
+void CelestialTracker::multiply33x31(float out31[3], float in33[3][3], float in31[3]){
+    //
+    // OUT31 = IN33 x IN31
+    //
     out31[0] = (in33[0][0] * in31[0]) + (in33[0][1] * in31[1]) + (in33[0][2] * in31[2]);
     out31[1] = (in33[1][0] * in31[0]) + (in33[1][1] * in31[1]) + (in33[1][2] * in31[2]);
     out31[2] = (in33[2][0] * in31[0]) + (in33[2][1] * in31[1]) + (in33[2][2] * in31[2]);
@@ -49,6 +110,13 @@ void CelestialTracker::multiply33x31(float out31[3], float in33[3][3], float in3
     return;
 }
 
+//------------------------------------------------------------
+// function: CelestialTracker::ecef2enu
+//
+// brief:
+//
+// details:
+//------------------------------------------------------------
 void CelestialTracker::ecef2enu(float latDeg, float lonDeg, float dcmEcefToEnu[3][3]) {
     // Trig Functions
     float sinLat = sin(latDeg * CT_D2R);
@@ -73,6 +141,13 @@ void CelestialTracker::ecef2enu(float latDeg, float lonDeg, float dcmEcefToEnu[3
     return;
 }
 
+//------------------------------------------------------------
+// function: CelestialTracker::lla2ecef
+//
+// brief:
+//
+// details:
+//------------------------------------------------------------
 void CelestialTracker::lla2ecef(float latDeg, float lonDeg, float altFt, float posEcef[3]) {
     // Trig Functions
     float sinLat = sin(latDeg * CT_D2R);
@@ -94,8 +169,14 @@ void CelestialTracker::lla2ecef(float latDeg, float lonDeg, float altFt, float p
     return;
 }
 
+//------------------------------------------------------------
+// function: CelestialTracker::calcSatDir
+//
+// brief:
+//
+// details:
+//------------------------------------------------------------
 void CelestialTracker::calcSatDir() {
-
     // Convert Satellite LLA to ECEF
     lla2ecef(_satLatDeg, _satLonDeg, _satAltFt, _satPosEcef);
 
@@ -125,6 +206,13 @@ void CelestialTracker::calcSatDir() {
     return;
 }
 
+//------------------------------------------------------------
+// function: CelestialTracker::calcCmdDir
+//
+// brief:
+//
+// details:
+//------------------------------------------------------------
 void CelestialTracker::calcCmdDir() {
     // [IN]  satDir - satellite direction angles [az, el], degrees
     // [IN]  trkDir - tracker   direction angles [az, el], degrees
