@@ -3,7 +3,11 @@
 //
 // @brief: Celestial Tracker algorithm source
 //
-// @details:
+// @details: Algorithm utilized for tracking a celestial body (particulary a
+//           man-made satellite). During each update call, the algorithm is
+//           provided with the tracker and satellite locations as well as the 
+//           tracker az/el. The commanded azimuth and elevation angles (tracker 
+//           needs to go to) are computed and then allocated to be retirieved.
 //
 // @ingroup: Celestial Tracker
 //
@@ -13,46 +17,25 @@
 // Include Files
 #include <cmath>
 #include "CelestialTracker.h"
-
-// Macro Definitions                                                            
-
-
-// Global Variables
-
-
 //********************************************************************************
 
 //------------------------------------------------------------
-// function: CelestialTracker::CelestialTracker
+// @function: CelestialTracker::update
 //
-// brief: CelestialTracker constructor
+// @brief: Update tracker data
 //
-// details:
+// @details: Computes commanded az/el for the tracker to go
 //------------------------------------------------------------
-CelestialTracker::CelestialTracker(float trkLLA[3]) {
+void CelestialTracker::update(float trkLLA[3], float satLLA[3], float trkDir[2]) {
     // Initialize Tracker LLA
     _trkLatDeg = trkLLA[0]; // tracker latitude, deg
     _trkLonDeg = trkLLA[1]; // tracker longitude, deg
-    _trkAltFt  = trkLLA[2]; // tracker altitude, ft
+    _trkAltFt  = trkLLA[2]; // tracker altitude, km
 
-    // Initialize Tracker Position ECEF, ft
-    lla2ecef(_trkLatDeg, _trkLonDeg, _trkAltFt, _trkPosEcef);
-
-    return;
-}
-
-//------------------------------------------------------------
-// function: CelestialTracker::update
-//
-// brief:
-//
-// details:
-//------------------------------------------------------------
-void CelestialTracker::update(float satLLA[3], float trkDir[2], float cmdDir[2]) {
     // Update Satellite LLA
     _satLatDeg = satLLA[0]; // tracker latitude, deg
     _satLonDeg = satLLA[1]; // tracker longitude, deg
-    _satAltFt  = satLLA[2]; // tracker altitude, ft
+    _satAltFt  = satLLA[2]; // tracker altitude, km
 
     // Update Tracker Direction
     _trkDir[0] = trkDir[0]; // tracker azimuth, deg
@@ -64,40 +47,38 @@ void CelestialTracker::update(float satLLA[3], float trkDir[2], float cmdDir[2])
     // Update Commanded Direction (where tracker needs to go)
     calcCmdDir();
 
-    cmdDir[0] = _cmdDir[0]; // commanded azimuth, deg
-    cmdDir[1] = _cmdDir[1]; // commanded elevation, deg
-
     return;
 }
 
 //------------------------------------------------------------
-// function: CelestialTracker::getSatAzDeg
+// @function: CelestialTracker::getSatAzDeg
 //
-// brief:
+// @brief: Azimuth getter
 //
-// details:
+// @details: Gets commanded azimuth (deg) for tracker to go
 //------------------------------------------------------------
-float CelestialTracker::getSatAzDeg() const {
-    return _satDir[0]; // output sat azimuth, deg
+float CelestialTracker::getCmdAzDeg() const {
+    return _cmdDir[0]; // output command azimuth, deg
 }
 
 //------------------------------------------------------------
-// function: CelestialTracker::getSatElDeg
+// @function: CelestialTracker::getSatElDeg
 //
-// brief:
+// @brief: Elevation getter
 //
-// details:
+// @details: Gets commanded elevation (deg) for tracker to go
 //------------------------------------------------------------
-float CelestialTracker::getSatElDeg() const {
-    return _satDir[1]; // output sat elevation, deg
+float CelestialTracker::getCmdElDeg() const {
+    return _cmdDir[1]; // output command elevation, deg
 }
 
 //------------------------------------------------------------
-// function: CelestialTracker::multiply33x31
+// @function: CelestialTracker::multiply33x31
 //
-// brief:
+// @brief: Basic matrix-vector multiplication
 //
-// details:
+// @details: Outputs a 3x1 vector from multiplying a 3x1
+//           vector by a 3x3 matrix
 //------------------------------------------------------------
 void CelestialTracker::multiply33x31(float out31[3], float in33[3][3], float in31[3]){
     //
@@ -111,11 +92,13 @@ void CelestialTracker::multiply33x31(float out31[3], float in33[3][3], float in3
 }
 
 //------------------------------------------------------------
-// function: CelestialTracker::ecef2enu
+// @function: CelestialTracker::ecef2enu
 //
-// brief:
+// @brief: ECEF to ENU transformation
 //
-// details:
+// @details: Uses know latitude and longitude to compute a
+//           direction cosine matrix for converting ECEF to
+//           ENU coordinates
 //------------------------------------------------------------
 void CelestialTracker::ecef2enu(float latDeg, float lonDeg, float dcmEcefToEnu[3][3]) {
     // Trig Functions
@@ -142,11 +125,12 @@ void CelestialTracker::ecef2enu(float latDeg, float lonDeg, float dcmEcefToEnu[3
 }
 
 //------------------------------------------------------------
-// function: CelestialTracker::lla2ecef
+// @function: CelestialTracker::lla2ecef
 //
-// brief:
+// @brief: LLA to ECEF position
 //
-// details:
+// @details: Uses known latitude, longitude and altitude to
+//           compute position in ECEF coordinates
 //------------------------------------------------------------
 void CelestialTracker::lla2ecef(float latDeg, float lonDeg, float altFt, float posEcef[3]) {
     // Trig Functions
@@ -170,14 +154,17 @@ void CelestialTracker::lla2ecef(float latDeg, float lonDeg, float altFt, float p
 }
 
 //------------------------------------------------------------
-// function: CelestialTracker::calcSatDir
+// @function: CelestialTracker::calcSatDir
 //
-// brief:
+// @brief: Satellite az/el
 //
-// details:
+// @details: Computes the azimuth and elevation angles of the
+//           satellite being tracked, relative to the tracker
+//           in ENU (east-north-up) coordinate frame
 //------------------------------------------------------------
 void CelestialTracker::calcSatDir() {
     // Convert Satellite LLA to ECEF
+    lla2ecef(_trkLatDeg, _trkLonDeg, _trkAltFt, _trkPosEcef);
     lla2ecef(_satLatDeg, _satLonDeg, _satAltFt, _satPosEcef);
 
     // Compute Relative Position Unit Vector ECEF
@@ -207,11 +194,13 @@ void CelestialTracker::calcSatDir() {
 }
 
 //------------------------------------------------------------
-// function: CelestialTracker::calcCmdDir
+// @function: CelestialTracker::calcCmdDir
 //
-// brief:
+// @brief: Command az/el
 //
-// details:
+// @details: Computes the azimuth and elevation angles the
+//           tracker must go to in order to point directly at
+//           the satellite of interest
 //------------------------------------------------------------
 void CelestialTracker::calcCmdDir() {
     // [IN]  satDir - satellite direction angles [az, el], degrees

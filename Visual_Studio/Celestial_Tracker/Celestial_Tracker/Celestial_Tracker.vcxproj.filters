@@ -21,9 +21,15 @@
     <ClCompile Include="CelestialTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TrackerApi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CelestialTracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackerApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
