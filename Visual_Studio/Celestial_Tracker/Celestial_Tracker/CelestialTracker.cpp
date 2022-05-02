@@ -51,7 +51,7 @@ void CelestialTracker::update(float trkLLA[3], float satLLA[3], float trkDir[2])
 }
 
 //------------------------------------------------------------
-// @function: CelestialTracker::getSatAzDeg
+// @function: CelestialTracker::getCmdAzDeg
 //
 // @brief: Azimuth getter
 //
@@ -62,7 +62,7 @@ float CelestialTracker::getCmdAzDeg() const {
 }
 
 //------------------------------------------------------------
-// @function: CelestialTracker::getSatElDeg
+// @function: CelestialTracker::getCmdElDeg
 //
 // @brief: Elevation getter
 //
