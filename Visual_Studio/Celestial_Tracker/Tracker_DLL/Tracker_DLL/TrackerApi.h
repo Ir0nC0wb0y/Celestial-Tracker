@@ -5,7 +5,7 @@
 
 #ifdef TRACKER_DLL_EXPORTS
 // Protection against potential user error;
-// TRACKER_STATIC_LIB and TRACKER_DLL_EXPORTS
+// TRACKER_SOURCE_CODE and TRACKER_DLL_EXPORTS
 // must not be both defined at the same time
 #ifdef TRACKER_SOURCE_CODE
 #undef TRACKER_SOURCE_CODE
@@ -24,8 +24,9 @@
 #define TRACKER_API
 #endif
 
-extern "C" TRACKER_API void trackerApiUpdate(float trackerLLADegKm[3], float satelliteLLADegKm[3], float trackerDirsAzElDeg[2]);
-
-extern "C" TRACKER_API float trackerApiGetAzimuth();
-
-extern "C" TRACKER_API float trackerApiGetElevation();
+extern "C" {
+    TRACKER_API void trackerApiUpdate(float trackerLLADegKm[3], 
+        float satelliteLLADegKm[3], float trackerDirsAzElDeg[2]);
+    TRACKER_API float trackerApiGetAzimuth();
+    TRACKER_API float trackerApiGetElevation();
+}
