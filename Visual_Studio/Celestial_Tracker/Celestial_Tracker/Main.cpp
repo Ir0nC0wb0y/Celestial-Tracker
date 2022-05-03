@@ -1,4 +1,4 @@
-#include "../Tracker_DLL/Tracker_DLL/TrackerApi.h"
+#include "TrackerApi.h"
 
 int main(){
     float trkLLA[3]{};
