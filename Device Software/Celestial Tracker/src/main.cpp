@@ -59,6 +59,11 @@ void setup() {
     Serial.println(".....Success!");
 
   // Homing
+  //goHome();
+  //while not isHomed() {
+    //runHoming();
+  // set current position to 0 (not sure what functions this uses for now)
+  
   next_loop = millis() + REPORT_TIME;
 }
 
