@@ -30,12 +30,12 @@ void CelestialTracker::update(float trkLLA[3], float satLLA[3], float trkDir[2])
     // Initialize Tracker LLA
     _trkLatDeg = trkLLA[0]; // tracker latitude, deg
     _trkLonDeg = trkLLA[1]; // tracker longitude, deg
-    _trkAltFt  = trkLLA[2]; // tracker altitude, km
+    _trkAltKm  = trkLLA[2]; // tracker altitude, km
 
     // Update Satellite LLA
     _satLatDeg = satLLA[0]; // tracker latitude, deg
     _satLonDeg = satLLA[1]; // tracker longitude, deg
-    _satAltFt  = satLLA[2]; // tracker altitude, km
+    _satAltKm  = satLLA[2]; // tracker altitude, km
 
     // Update Tracker Direction
     _trkDir[0] = trkDir[0]; // tracker azimuth, deg
@@ -132,7 +132,7 @@ void CelestialTracker::ecef2enu(float latDeg, float lonDeg, float dcmEcefToEnu[3
 // @details: Uses known latitude, longitude and altitude to
 //           compute position in ECEF coordinates
 //------------------------------------------------------------
-void CelestialTracker::lla2ecef(float latDeg, float lonDeg, float altFt, float posEcef[3]) {
+void CelestialTracker::lla2ecef(float latDeg, float lonDeg, float altKm, float posEcef[3]) {
     // Trig Functions
     float sinLat = sin(latDeg * CT_D2R);
     float sinLon = sin(lonDeg * CT_D2R);
@@ -141,9 +141,9 @@ void CelestialTracker::lla2ecef(float latDeg, float lonDeg, float altFt, float p
     float cosLon = cos(lonDeg * CT_D2R);
 
     // Radii of Curvature
-    float r0 = CT_EARTH_RADIUS_FT / sqrt(1.0f - (CT_EARTH_ECC2 * sinLat * sinLat)); // normal radius of curvature
-    float r1 = r0 + altFt;
-    float r2 = r0 * (1.0f - CT_EARTH_ECC2) + altFt; // meridian radius of curvature
+    float r0 = CT_EARTH_RADIUS_KM / sqrt(1.0f - (CT_EARTH_ECC2 * sinLat * sinLat)); // normal radius of curvature
+    float r1 = r0 + altKm;
+    float r2 = r0 * (1.0f - CT_EARTH_ECC2) + altKm; // meridian radius of curvature
 
     // ECEF Coordinates
     posEcef[0] = -r1 * (-cosLon * cosLat);
@@ -164,8 +164,8 @@ void CelestialTracker::lla2ecef(float latDeg, float lonDeg, float altFt, float p
 //------------------------------------------------------------
 void CelestialTracker::calcSatDir() {
     // Convert Satellite LLA to ECEF
-    lla2ecef(_trkLatDeg, _trkLonDeg, _trkAltFt, _trkPosEcef);
-    lla2ecef(_satLatDeg, _satLonDeg, _satAltFt, _satPosEcef);
+    lla2ecef(_trkLatDeg, _trkLonDeg, _trkAltKm, _trkPosEcef);
+    lla2ecef(_satLatDeg, _satLonDeg, _satAltKm, _satPosEcef);
 
     // Compute Relative Position Unit Vector ECEF
     _relPosEcef[0] = _satPosEcef[0] - _trkPosEcef[0];
