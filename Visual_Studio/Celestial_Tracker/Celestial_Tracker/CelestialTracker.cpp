@@ -7,7 +7,7 @@
 //           man-made satellite). During each update call, the algorithm is
 //           provided with the tracker and satellite locations as well as the 
 //           tracker az/el. The commanded azimuth and elevation angles (tracker 
-//           needs to go to) are computed and then allocated to be retirieved.
+//           needs to go to) are computed and then allocated to be retrieved.
 //
 // @ingroup: Celestial Tracker
 //
