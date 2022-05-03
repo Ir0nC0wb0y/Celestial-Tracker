@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <ProjectOutputs>C:\Users\austi\OneDrive\Documents\GitHub\Celestial-Tracker\Visual_Studio\Celestial_Tracker\x64\Debug\Celestial_Tracker.exe</ProjectOutputs>
-  <ContentFiles></ContentFiles>
-  <SatelliteDlls></SatelliteDlls>
-  <NonRecipeFileRefs></NonRecipeFileRefs>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Users\Austin\Documents\GitHub\Celestial-Tracker\Visual_Studio\Celestial_Tracker\x64\Debug\Celestial_Tracker.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
 </Project>

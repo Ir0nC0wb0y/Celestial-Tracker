@@ -1,12 +1,14 @@
 #pragma once
 
+#define HELLOWORLD_EXPORTS
+
 #ifdef HELLOWORLD_EXPORTS
 #define HELLOWORLD_API __declspec(dllexport)
 #else
 #define HELLOWORLD_API __declspec(dllimport)
 #endif
 
-class HELLOWORLD_API Geek
+class Geek
 {
 public:
     Geek();
@@ -16,12 +18,14 @@ public:
     void initVar();
 
 private:
-    int _var;
+    int _var{};
 };
 
 extern "C" HELLOWORLD_API void helloWorld();
 
 extern "C" HELLOWORLD_API int sum(int, int);
+
+extern "C" HELLOWORLD_API int sum2(int32_t[2]);
 
 extern "C" HELLOWORLD_API void initialize();
 

@@ -21,7 +21,7 @@
     <ClCompile Include="CelestialTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TrackerApi.cpp">
+    <ClCompile Include="..\Tracker_DLL\Tracker_DLL\TrackerApi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,8 +29,18 @@
     <ClInclude Include="CelestialTracker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TrackerApi.h">
+    <ClInclude Include="..\Tracker_DLL\Tracker_DLL\TrackerApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tracker_DLL.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Tracker_DLL.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>

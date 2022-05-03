@@ -8,6 +8,7 @@ Geek geek{};
 
 Geek::Geek()
 {
+    _var = 0;
     return;
 }
 
@@ -45,6 +46,11 @@ int sum(int a, int b)
     int c{};
     sumInternal(a, b, c);
     return c;
+}
+
+int sum2(int32_t in[2])
+{
+    return in[0] + in[1];
 }
 
 void initialize()

@@ -21,10 +21,10 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TrackerDLL.cpp">
+    <ClCompile Include="..\..\Celestial_Tracker\CelestialTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestial_Tracker\CelestialTracker.cpp">
+    <ClCompile Include="TrackerApi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,10 +35,10 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TrackerDLL.h">
+    <ClInclude Include="..\..\Celestial_Tracker\CelestialTracker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestial_Tracker\CelestialTracker.h">
+    <ClInclude Include="TrackerApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

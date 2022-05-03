@@ -1,0 +1,8 @@
+﻿  TrackerApi.cpp
+  CelestialTracker.cpp
+  Main.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 1 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Celestial_Tracker.vcxproj -> C:\Users\Austin\Documents\GitHub\Celestial-Tracker\Visual_Studio\Celestial_Tracker\x64\Release\Celestial_Tracker.exe

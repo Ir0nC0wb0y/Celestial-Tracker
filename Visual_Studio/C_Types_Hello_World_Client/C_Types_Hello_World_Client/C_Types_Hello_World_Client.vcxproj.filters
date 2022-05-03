@@ -19,14 +19,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="HelloWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="C_Types_Hello_World.dll">
-      <Filter>Source Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>
