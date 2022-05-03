@@ -7,19 +7,35 @@ Created on Sun May  1 13:04:03 2022
 
 import ctypes
 
-dllPath = 'C:\\Users\\Austin\\Documents\\GitHub\\Celestial-Tracker\\Visual_Studio\\C_Types_Hello_World\\x64\\Release\\C_Types_Hello_World.dll'
-lib = ctypes.cdll.LoadLibrary(dllPath)
+# Load Tracker API
+trackerApi = ctypes.cdll.LoadLibrary('Tracker_DLL.dll')
 
-lib.initialize()
+# Satellite States
+satLatDeg = -1.0
+satLonDeg = 0.1
+satAltKm = 400.0
 
-g = lib.update()
-print(g)
+satLLA = (ctypes.c_float * 3)(*[satLatDeg, satLonDeg, satAltKm])
 
-g = lib.update()
-print(g)
+# Tracker States
+trkLatDeg = 0.0
+trkLonDeg = 0.0
+trkAltKm = 0.0
 
-print()
+trkAzDeg = 0.0
+trkElDeg = 45.0
 
-a = (ctypes.c_int32 * 2)(*[8,2])
-h = lib.sum2(a)
-print(h)
+trkLLA = (ctypes.c_float * 3)(*[trkLatDeg, trkLonDeg, trkAltKm])
+trkDir = (ctypes.c_float * 2)(*[trkAzDeg, trkElDeg])
+
+# Tracker API Update
+trackerApi.trackerApiGetAzimuth.restype = ctypes.c_float
+trackerApi.trackerApiGetElevation.restype = ctypes.c_float
+
+trackerApi.trackerApiUpdate(trkLLA, satLLA, trkDir)
+
+cmdAzDeg = trackerApi.trackerApiGetAzimuth()
+cmdElDeg = trackerApi.trackerApiGetElevation()
+
+print(cmdAzDeg)
+print(cmdElDeg)

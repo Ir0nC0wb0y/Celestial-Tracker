@@ -53,6 +53,11 @@ int sum2(int32_t in[2])
     return in[0] + in[1];
 }
 
+float sum3(float a, float b)
+{
+    return a + b;
+}
+
 void initialize()
 {
     geek.initVar();

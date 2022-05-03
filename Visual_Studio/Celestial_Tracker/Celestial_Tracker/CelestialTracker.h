@@ -1,12 +1,33 @@
+//////////////////////////////////////////////////////////////////////////////////
+// @file: CelestialTracker.h
+//
+// @brief: Celestial Tracker algorithm header
+//
+// @details: 
+//
+// @ingroup: Celestial Tracker
+//
+// @author: Austin M. Ottaway
+//////////////////////////////////////////////////////////////////////////////////
 #ifndef CELESTIAL_TRACKER_H
 #define CELESTIAL_TRACKER_H
-
+#define TRACKER_API_H
+//********************************************************************************
+// Macro Definitions
 #define CT_PI              3.14159265f    // pi
 #define CT_D2R             0.01745329f    // degrees to radians
 #define CT_R2D             57.29577951f   // radians to degrees
 #define CT_EARTH_RADIUS_KM 6378.13699997f // earth major radius, km
 #define CT_EARTH_ECC2      0.00669438f    // earth eccentricity squared
+//********************************************************************************
 
+//------------------------------------------------------------
+// @class: CelestialTracker
+//
+// @brief:
+//
+// @details: 
+//------------------------------------------------------------
 class CelestialTracker {
 public:
     CelestialTracker() {}

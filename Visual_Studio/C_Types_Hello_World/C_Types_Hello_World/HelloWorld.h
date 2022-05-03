@@ -27,6 +27,8 @@ extern "C" HELLOWORLD_API int sum(int, int);
 
 extern "C" HELLOWORLD_API int sum2(int32_t[2]);
 
+extern "C" HELLOWORLD_API float sum3(float, float);
+
 extern "C" HELLOWORLD_API void initialize();
 
 extern "C" HELLOWORLD_API int update();

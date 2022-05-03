@@ -1,7 +1,7 @@
 ﻿  CelestialTracker.cpp
+  TrackerApi.cpp
   dllmain.cpp
   pch.cpp
-  TrackerApi.cpp
      Creating library C:\Users\Austin\Documents\GitHub\Celestial-Tracker\Visual_Studio\Celestial_Tracker\Tracker_DLL\x64\Release\Tracker_DLL.lib and object C:\Users\Austin\Documents\GitHub\Celestial-Tracker\Visual_Studio\Celestial_Tracker\Tracker_DLL\x64\Release\Tracker_DLL.exp
   Generating code
   Previous IPDB not found, fall back to full compilation.
