@@ -1,6 +1,6 @@
 #pragma once
 
-//#define TRACKER_SOURCE_CODE // define this if using source instead of dll
+#define TRACKER_SOURCE_CODE // define this if using source instead of dll
 //#define TRACKER_DLL_EXPORTS // define this when building a new dll (overrides above macro)
 
 #ifdef TRACKER_DLL_EXPORTS

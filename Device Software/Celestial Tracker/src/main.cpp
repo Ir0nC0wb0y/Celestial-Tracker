@@ -4,6 +4,8 @@
 
 #include "Move.h"
 
+#include "TrackerApi.h"
+
 #define FULLSTEP 4
 #define HALFSTEP 8
 #define STEP_AZ_A 16 // Connected pin for Az motor, IN1
@@ -29,6 +31,12 @@ AccelStepper Stepper_Az(HALFSTEP,STEP_AZ_A,STEP_AZ_B,STEP_AZ_C,STEP_AZ_D);
 AccelStepper Stepper_El(HALFSTEP,STEP_EL_A,STEP_EL_B,STEP_EL_C,STEP_EL_D);
 
 Position Pointer;
+
+float satLLA[3]{};
+float trkLLA[3]{};
+float trkDir[2]{};
+float cmdAz{};
+float cmdEl{};
 
 void setup() {
 
@@ -115,5 +123,19 @@ void loop() {
 	Stepper_Az.run();
   Stepper_El.run();
   
+  // Test Tracker API
+  trkLLA[0] = 0.0f;   // tracker latitude, deg
+  trkLLA[1] = 0.0f;   // tracker longitude, deg
+  trkLLA[2] = 0.0f;   // tracker altitude, km
 
+  satLLA[0] = -2.0f;   // satellite latitude, deg
+  satLLA[1] = 0.1f;   // satellite longitude, deg
+  satLLA[2] = 400.0f; // satellite altitude, km
+
+  trkDir[0] = 0.0f;   // tracker azimuth, deg
+  trkDir[1] = 45.0f;  // tracker elevation, deg
+
+  trackerApiUpdate(trkLLA, satLLA, trkDir);
+  cmdAz = trackerApiGetAzimuth();
+  cmdEl = trackerApiGetElevation();
 }

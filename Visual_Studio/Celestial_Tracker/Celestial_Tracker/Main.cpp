@@ -11,8 +11,8 @@ int main(){
     trkLLA[1] = 0.0f;   // tracker longitude, deg
     trkLLA[2] = 0.0f;   // tracker altitude, km
 
-    satLLA[0] = 0.0f;   // satellite latitude, deg
-    satLLA[1] = 0.0f;   // satellite longitude, deg
+    satLLA[0] = -2.0f;   // satellite latitude, deg
+    satLLA[1] = 0.1f;   // satellite longitude, deg
     satLLA[2] = 400.0f; // satellite altitude, km
 
     trkDir[0] = 0.0f;   // tracker azimuth, deg
