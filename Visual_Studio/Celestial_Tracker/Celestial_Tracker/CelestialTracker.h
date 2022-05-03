@@ -11,7 +11,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 #ifndef CELESTIAL_TRACKER_H
 #define CELESTIAL_TRACKER_H
-#define TRACKER_API_H
 //********************************************************************************
 // Macro Definitions
 #define CT_PI              3.14159265f    // pi
@@ -67,5 +66,4 @@ private:
 
     float _dcmEcefToEnu[3][3]{}; // direction cosine matrix for ECEF to ENU
 };
-
 #endif
