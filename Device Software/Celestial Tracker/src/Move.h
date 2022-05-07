@@ -7,6 +7,7 @@
 #define BASE_SPEED 800
 #define MAX_SPEED  1000
 
+// This class should be used to track its location
 class Position {
   public:
     Position();
@@ -28,4 +29,12 @@ class Position {
     float _move_El = 0;
     int _speed_Az = 0;
     int _speed_El = 0;
+};
+
+// New class should be used for the movement
+class Move {
+  public:
+
+  private:
+
 };
