@@ -1,11 +1,12 @@
 #include <Arduino.h>
-//#include <WiFiManager.h>
+#include <WiFiManager.h>
 
 
 #include "Move.h"
 #include "TrackerApi.h"
 #include "PinDef.h"
 #include "homing.h"
+#include "GetData.h"
 
 AccelStepper Stepper_Az(HALFSTEP,PIN_AZ_A,PIN_AZ_B,PIN_AZ_C,PIN_AZ_D);
 AccelStepper Stepper_El(HALFSTEP,PIN_EL_A,PIN_EL_B,PIN_EL_C,PIN_EL_D);
@@ -27,6 +28,9 @@ unsigned long movement_loop = 0;
 Position Pointer;
 Homing home;
 
+WiFiManager wm;
+bool wm_nonblocking = true; //change if this causes issues
+
 float satLLA[3]{};
 float trkLLA[3]{};
 float trkDir[2]{};
@@ -36,7 +40,24 @@ float cmdEl{};
 void setup() {
 
   Serial.begin(115200);
+
+  // Setup WiFi
+  WiFi.mode(WIFI_STA);
+  if (wm_nonblocking) wm.setConfigPortalBlocking(false);
+  wm.setConnectTimeout(20);
+  wm.setConfigPortalTimeout(30);
+  wm.setMinimumSignalQuality(20);
+  bool res;
+  res = wm.autoConnect("CelestialTracker"); 
+  //res = wm.autoConnect("CelestialTracker","optional_pass"); // the same as above, but with an optional password
+
+  if (res) {
+    Serial.println("WiFi Connected Successfully!");
+  }
   
+  lla WhereISS;
+  WhereISS = WhereIsTheISS();
+
   // Setup Endstop Pins
   pinMode(PIN_H_AZ,INPUT_PULLUP);
   pinMode(PIN_H_EL,INPUT_PULLUP);
