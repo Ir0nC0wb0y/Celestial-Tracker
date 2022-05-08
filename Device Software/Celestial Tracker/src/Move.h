@@ -17,6 +17,7 @@ class Position {
     int getStepsEl();
     int getSpeedAz();
     int getSpeedEl();
+    void setPosition(float angleAz, float angleEl);
 
   private:
     float _angle_Az = 0;

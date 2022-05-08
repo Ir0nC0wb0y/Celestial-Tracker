@@ -5,6 +5,7 @@
 #include "Move.h"
 #include "TrackerApi.h"
 #include "PinDef.h"
+#include "homing.h"
 
 AccelStepper Stepper_Az(HALFSTEP,PIN_AZ_A,PIN_AZ_B,PIN_AZ_C,PIN_AZ_D);
 AccelStepper Stepper_El(HALFSTEP,PIN_EL_A,PIN_EL_B,PIN_EL_C,PIN_EL_D);
@@ -16,11 +17,15 @@ float Az_angle = 0;
 float El_angle = 0;
 
 #define REPORT_TIME 1000
-unsigned long next_loop = 0;
+#define MOVEMENT_TIME 5000
+unsigned long report_loop = 0;
+unsigned long movement_loop = 0;
 
-
+#define HOME_OFF_AZ 0.0  // Offset in homing for Az
+#define HOME_OFF_EL 0.0  // Offset in homing for El
 
 Position Pointer;
+Homing home;
 
 float satLLA[3]{};
 float trkLLA[3]{};
@@ -32,6 +37,10 @@ void setup() {
 
   Serial.begin(115200);
   
+  // Setup Endstop Pins
+  pinMode(PIN_H_AZ,INPUT_PULLUP);
+  pinMode(PIN_H_EL,INPUT_PULLUP);
+
   // Setup Steppers
     // Azimuth
     Serial.print("Setting up Az motor");
@@ -49,17 +58,20 @@ void setup() {
     Serial.println(".....Success!");
 
   // Homing
-  //goHome();
-  //while not isHomed() {
-    //runHoming();
+  home.goHome();
+  while (!home.isHomed()) {
+    home.runHoming();
+  }
   // set current position to 0 (not sure what functions this uses for now)
+  Pointer.setPosition(HOME_OFF_AZ,HOME_OFF_EL);
   
-  next_loop = millis() + REPORT_TIME;
+  report_loop = millis() + REPORT_TIME;
+  movement_loop = millis() + REPORT_TIME;
 }
 
 void loop() {
 // Change direction once the motor reaches target position
-	if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0) {
+	if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0 && movement_loop <= millis()) {
     //delay(1000);
     /*
     // Create new positions
@@ -88,8 +100,8 @@ void loop() {
   // Move Random Angle (not go to)
   Stepper_Az.setCurrentPosition(0);
   Stepper_El.setCurrentPosition(0);
-  int az_angle = random(-36,36) * 5; //random(-90,90);
-  int el_angle = random(-36,36) * 5;
+  int az_angle = random( 0,10);
+  int el_angle = random(0,10);
   Pointer.MoveDirect(az_angle,el_angle);
   Stepper_Az.moveTo(Pointer.getStepsAz());
   Stepper_El.moveTo(Pointer.getStepsEl());
@@ -103,15 +115,16 @@ void loop() {
   Serial.print(Pointer.getSpeedAz()); Serial.print(" , ");
   Serial.print(Pointer.getSpeedEl()); Serial.println();
 
+  movement_loop = MOVEMENT_TIME + millis();
   }
 
-  if ( millis() >= next_loop ) {
+  if ( millis() >= report_loop ) {
     Serial.print("Current Position (Az, El): ");
     Serial.print(Stepper_Az.currentPosition());
     Serial.print(" , ");
     Serial.print(Stepper_El.currentPosition());
     Serial.println();
-    next_loop = millis() + REPORT_TIME;
+    report_loop = millis() + REPORT_TIME;
   }
 
 	// Move the motor one step
