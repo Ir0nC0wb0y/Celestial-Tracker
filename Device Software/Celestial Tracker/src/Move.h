@@ -1,5 +1,6 @@
 #pragma once
 #include <Arduino.h>
+#include "PinDef.h"
 
 //#define GEAR_RATIO        3.84615384615
 //#define FULL_ROTATION     4076

@@ -17,7 +17,7 @@ float Az_angle = 0;
 float El_angle = 0;
 
 #define REPORT_TIME 1000
-#define MOVEMENT_TIME 5000
+#define MOVEMENT_TIME 2000
 unsigned long report_loop = 0;
 unsigned long movement_loop = 0;
 
@@ -100,8 +100,8 @@ void loop() {
   // Move Random Angle (not go to)
   Stepper_Az.setCurrentPosition(0);
   Stepper_El.setCurrentPosition(0);
-  int az_angle = random( 0,10);
-  int el_angle = random(0,10);
+  int az_angle = random(0,5);
+  int el_angle = random(0,5);
   Pointer.MoveDirect(az_angle,el_angle);
   Stepper_Az.moveTo(Pointer.getStepsAz());
   Stepper_El.moveTo(Pointer.getStepsEl());

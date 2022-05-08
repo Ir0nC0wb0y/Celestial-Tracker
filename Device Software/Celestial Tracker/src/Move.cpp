@@ -34,6 +34,8 @@ void Position::MoveDirect(float move_Az, float move_El) {
 void Position::setPosition(float angleAz, float angleEl) {
   _angle_Az = angleAz;
   _angle_El = angleEl;
+  Stepper_Az.setCurrentPosition(0);
+  Stepper_El.setCurrentPosition(0);
   Serial.print("Setting new position (Az,El): ");
   Serial.print(_angle_Az);
   Serial.print(" , ");
