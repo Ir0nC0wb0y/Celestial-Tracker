@@ -1,10 +1,14 @@
 #include "GetData.h"
 
-String ISS_location;
+
 
 lla WhereIsTheISS() {
+  
+  String ISS_location;
+  lla ISS_lla;
+  
+if WiFi == connected {
   //ISS_location = GET_Request("https://api.wheretheiss.at/v1/satellites/25544");
-
   HTTPClient http;
   http.begin("https://api.wheretheiss.at/v1/satellites/25544");
   int httpResponseCode = http.GET();
@@ -26,10 +30,16 @@ lla WhereIsTheISS() {
     Serial.println("Parsing input failed!");
   }
 
-  lla ISS_lla;
+  
   ISS_lla.latitude = atof(ISS_obj["latitude"]); 
   ISS_lla.latitude = atof(ISS_obj["longitude"]);
   ISS_lla.latitude = atof(ISS_obj["altitude"]); // comes in km
+} else {
+  ISS_lla.latitude = 0; 
+  ISS_lla.latitude = 0;
+  ISS_lla.latitude = 0; // comes in km
+}
+  
 
   return ISS_lla;
 }
