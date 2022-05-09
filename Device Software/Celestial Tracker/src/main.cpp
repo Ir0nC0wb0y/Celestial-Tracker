@@ -86,13 +86,13 @@ void setup() {
   // set current position to 0 (not sure what functions this uses for now)
   Pointer.setPosition(HOME_OFF_AZ,HOME_OFF_EL);
   
-  report_loop = millis() + REPORT_TIME;
-  movement_loop = millis() + REPORT_TIME;
+  report_loop = millis();
+  movement_loop = millis();
 }
 
 void loop() {
 // Change direction once the motor reaches target position
-	if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0 && movement_loop <= millis()) {
+  if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0 && movement_loop <= millis()) {
     //delay(1000);
     /*
     // Create new positions
@@ -148,23 +148,23 @@ void loop() {
     report_loop = millis() + REPORT_TIME;
   }
 
-	// Move the motor one step
-	Stepper_Az.run();
+  // Move the motor one step
+  Stepper_Az.run();
   Stepper_El.run();
   
   // Test Tracker API
-  trkLLA[0] = 0.0f;   // tracker latitude, deg
-  trkLLA[1] = 0.0f;   // tracker longitude, deg
-  trkLLA[2] = 0.0f;   // tracker altitude, km
+  //trkLLA[0] = 0.0f;   // tracker latitude, deg
+  //trkLLA[1] = 0.0f;   // tracker longitude, deg
+  //trkLLA[2] = 0.0f;   // tracker altitude, km
 
-  satLLA[0] = -2.0f;   // satellite latitude, deg
-  satLLA[1] = 0.1f;   // satellite longitude, deg
-  satLLA[2] = 400.0f; // satellite altitude, km
+  //satLLA[0] = -2.0f;   // satellite latitude, deg
+  //satLLA[1] = 0.1f;   // satellite longitude, deg
+  //satLLA[2] = 400.0f; // satellite altitude, km
 
-  trkDir[0] = 0.0f;   // tracker azimuth, deg
-  trkDir[1] = 45.0f;  // tracker elevation, deg
+  //trkDir[0] = 0.0f;   // tracker azimuth, deg
+  //trkDir[1] = 45.0f;  // tracker elevation, deg
 
-  trackerApiUpdate(trkLLA, satLLA, trkDir);
-  cmdAz = trackerApiGetAzimuth();
-  cmdEl = trackerApiGetElevation();
+  //trackerApiUpdate(trkLLA, satLLA, trkDir);
+  //cmdAz = trackerApiGetAzimuth();
+  //cmdEl = trackerApiGetElevation();
 }
