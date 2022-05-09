@@ -29,7 +29,7 @@ Position Pointer;
 Homing home;
 
 WiFiManager wm;
-bool wm_nonblocking = true; //change if this causes issues
+bool wm_nonblocking = false; //change if this causes issues
 
 float satLLA[3]{};
 float trkLLA[3]{};
@@ -45,18 +45,22 @@ void setup() {
   WiFi.mode(WIFI_STA);
   if (wm_nonblocking) wm.setConfigPortalBlocking(false);
   wm.setConnectTimeout(20);
-  wm.setConfigPortalTimeout(30);
-  wm.setMinimumSignalQuality(20);
+  wm.setConfigPortalTimeout(300);
+  //wm.setMinimumSignalQuality(20);
   bool res;
   res = wm.autoConnect("CelestialTracker"); 
   //res = wm.autoConnect("CelestialTracker","optional_pass"); // the same as above, but with an optional password
 
   if (res) {
     Serial.println("WiFi Connected Successfully!");
+  } else {
+    Serial.println("Failed to Connect WiFi!");
+    ESP.restart();
   }
   
   lla WhereISS;
   WhereISS = WhereIsTheISS();
+  Serial.print("ISS (lat,long,alt): "); Serial.print(WhereISS.latitude); Serial.print(" , "); Serial.print(WhereISS.longitude); Serial.print(" , "); Serial.printlnhereISS.altitude);
 
   // Setup Endstop Pins
   pinMode(PIN_H_AZ,INPUT_PULLUP);
