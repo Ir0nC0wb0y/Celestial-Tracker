@@ -97,52 +97,27 @@ void setup() {
 void loop() {
 // Change direction once the motor reaches target position
   if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0 && movement_loop <= millis()) {
-    //delay(1000);
-    /*
-    // Create new positions
-    int Az_pos_last = Stepper_Az.currentPosition();
-    int El_pos_last = Stepper_El.currentPosition();
-    int Az_pos_new = random(-MAX_POSITION/2,MAX_POSITION/2);
-    int El_pos_new = Az_pos_new + random(-MAX_POSITION/2,MAX_POSITION/2);
-    Stepper_Az.moveTo(Az_pos_new);
-    Stepper_El.moveTo(El_pos_new);
-    // Calculate Speeds
-    int Az_move = Az_pos_new - Az_pos_last;
-    int El_move = El_pos_new - El_pos_last;
-    int Az_speed = BASE_SPEED;
-    int El_speed = BASE_SPEED * abs((float)El_move/(float)Az_move);
-    if ( El_speed > MAX_SPEED) {
-      Az_speed = BASE_SPEED*(MAX_SPEED/(float)El_speed);
-      El_speed = MAX_SPEED;
-    }
-    Stepper_Az.setMaxSpeed(Az_speed);
-    Stepper_El.setMaxSpeed(El_speed);
-    
-    Serial.print("Changing to new positions (Az,EL): "); Serial.print(Az_pos_new); Serial.print(" , "); Serial.println(El_pos_new);
-    Serial.print("Az Move, El Move, Az Speed, El Speed: "); Serial.print(Az_move); Serial.print(" , "); Serial.print(El_move); Serial.print(" , "); Serial.print(Az_speed); Serial.print(" , "); Serial.println(El_speed);
-    */
-   
-  // Move Random Angle (not go to)
-  Stepper_Az.setCurrentPosition(0);
-  Stepper_El.setCurrentPosition(0);
-  int az_angle = random(0,5);
-  int el_angle = random(0,5);
-  Pointer.MoveDirect(az_angle,el_angle);
-  Stepper_Az.moveTo(Pointer.getStepsAz());
-  Stepper_El.moveTo(Pointer.getStepsEl());
-  Stepper_Az.setMaxSpeed(Pointer.getSpeedAz());
-  Stepper_El.setMaxSpeed(Pointer.getSpeedEl());
-  Serial.print("Az Angle, El Angle, Az Steps, El Steps, Az Speed, El Speed: ");
-  Serial.print(az_angle); Serial.print(" , ");
-  Serial.print(el_angle); Serial.print(" , ");
-  Serial.print(Pointer.getStepsAz()); Serial.print(" , ");
-  Serial.print(Pointer.getStepsEl()); Serial.print(" , ");
-  Serial.print(Pointer.getSpeedAz()); Serial.print(" , ");
-  Serial.print(Pointer.getSpeedEl()); Serial.println();
+    // Move Random Angle (not go to)
+    Stepper_Az.setCurrentPosition(0);
+    Stepper_El.setCurrentPosition(0);
+    int az_angle = random(0,5);
+    int el_angle = random(0,5);
+    Pointer.MoveDirect(az_angle,el_angle);
+    Stepper_Az.moveTo(Pointer.getStepsAz());
+    Stepper_El.moveTo(Pointer.getStepsEl());
+    Stepper_Az.setMaxSpeed(Pointer.getSpeedAz());
+    Stepper_El.setMaxSpeed(Pointer.getSpeedEl());
+    Serial.print("Az Angle, El Angle, Az Steps, El Steps, Az Speed, El Speed: ");
+    Serial.print(az_angle); Serial.print(" , ");
+    Serial.print(el_angle); Serial.print(" , ");
+    Serial.print(Pointer.getStepsAz()); Serial.print(" , ");
+    Serial.print(Pointer.getStepsEl()); Serial.print(" , ");
+    Serial.print(Pointer.getSpeedAz()); Serial.print(" , ");
+    Serial.print(Pointer.getSpeedEl()); Serial.println();
 
-  movement_loop = MOVEMENT_TIME + millis();
+    movement_loop = MOVEMENT_TIME + millis();
   }
-
+  
   if ( millis() >= report_loop ) {
     Serial.print("Current Position (Az, El): ");
     Serial.print(Stepper_Az.currentPosition());
