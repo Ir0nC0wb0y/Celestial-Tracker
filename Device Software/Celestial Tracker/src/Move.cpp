@@ -17,7 +17,7 @@ bool Position::AccumulateMove(float new_Az, float new_El) {
   }
 }
 
-void SetAccumulation(float min_Az, float min_El) {
+void Position::SetAccumulation(float min_Az, float min_El) {
   _min_Az = abs(min_Az);
   _min_El = abs(min_El);
 }
@@ -30,12 +30,12 @@ void Position::MoveTo(float angle_Az, float angle_El) {
   float move_El_ccw = 0.0;
   
   // Calculate CW move
-  move_Az_cw = ((angle_Az + 360) - _angle_Az) % 360;
-  move_El_cw = ((angle_El + 360) - _angle_El) % 360;
+  move_Az_cw = fmod(((angle_Az + 360.0) - _angle_Az), 360.0);
+  move_El_cw = fmod(((angle_El + 360.0) - _angle_El), 360.0);
   
   // Calculate CCW move
-  move_Az_ccw = -1 * (((_angle_Az + 360) - angle_Az) % 360);
-  move_El_ccw = -1 * (((_angle_El + 360) - angle_El) % 360);
+  move_Az_ccw = -1 * fmod(((_angle_Az + 360.0) - angle_Az), 360.0);
+  move_El_ccw = -1 * fmod(((_angle_El + 360.0) - angle_El), 360.0);
   
   // Choose closest move - Az
   float move_Az = 0.0;
@@ -54,31 +54,31 @@ void Position::MoveTo(float angle_Az, float angle_El) {
   }
   
   // Make the move
-  _Calc_steps(float move_Az, float move_El);
-  _Calc_speed();
+  _Calc_Steps(move_Az, move_El);
+  _Calc_Speed();
   
   // Set current position
   // This will forever remain between 0 <= angle < 360
-  _angle_Az = angle_Az % 360;
-  _angle_El = angle_El % 360;
+  _angle_Az = fmod(angle_Az, 360.0);
+  _angle_El = fmod(angle_El, 360.0);
 }
 
 void Position::MoveDirect(float move_Az, float move_El) {
   // Determine Steps
-  _Calc_steps(float move_Az, float move_El);
+  _Calc_Steps(move_Az, move_El);
   
   // Determine Speed
-  _Calc_speed();
+  _Calc_Speed();
   
   // Set updated position
   // This will forever remain between 0 <= angle < 360
-  _angle_Az = (angle_Az + move_Az) % 360;
-  _angle_El = (angle_El + move_El) % 360;
+  _angle_Az = fmod(_angle_Az + move_Az, 360.0);
+  _angle_El = fmod(_angle_El + move_El, 360.0);
 }
 
 void Position::setZeroPosition(float angleAz, float angleEl) {
-  _angle_Az = angleAz % 360;
-  _angle_El = angleEl % 360;
+  _angle_Az = fmod(angleAz, 360.0);
+  _angle_El = fmod(angleEl, 360.0);
   Stepper_Az.setCurrentPosition(0);
   Stepper_El.setCurrentPosition(0);
   Serial.print("Setting new position (Az,El): ");
@@ -111,13 +111,13 @@ int Position::getCurrentEl() {
   return _angle_El;
 }
 
-void Position::_Calc_steps(float move_Az, float move_El) {
+void Position::_Calc_Steps(float move_Az, float move_El) {
   // Determine Steps
   _steps_Az = move_Az * STEPS_PER_DEGREE;
   _steps_El = move_El * STEPS_PER_DEGREE - _steps_Az;
 }
 
-void Position::_Calc_speed() {
+void Position::_Calc_Speed() {
   // Determine Speed
   _speed_Az = BASE_SPEED;
   _speed_El = BASE_SPEED * abs((float)_steps_El / (float)_steps_Az);

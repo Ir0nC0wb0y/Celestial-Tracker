@@ -1,8 +1,8 @@
 #pragma once
 #include <Arduino.h>
-//#include <WiFi.h>
+#include <WiFi.h>
 #include <HTTPClient.h>
-#include <Arduino_JSON.h>
+#include <ArduinoJSON.h>
 
 
 class lla {

@@ -60,7 +60,7 @@ void setup() {
   
   lla WhereISS;
   WhereISS = WhereIsTheISS();
-  Serial.print("ISS (lat,long,alt): "); Serial.print(WhereISS.latitude); Serial.print(" , "); Serial.print(WhereISS.longitude); Serial.print(" , "); Serial.printlnhereISS.altitude);
+  Serial.print("ISS (lat,long,alt): "); Serial.print(WhereISS.latitude); Serial.print(" , "); Serial.print(WhereISS.longitude); Serial.print(" , "); Serial.println(WhereISS.altitude);
 
   // Setup Endstop Pins
   pinMode(PIN_H_AZ,INPUT_PULLUP);
@@ -88,7 +88,7 @@ void setup() {
     home.runHoming();
   }
   // set current position to 0 (not sure what functions this uses for now)
-  Pointer.setPosition(HOME_OFF_AZ,HOME_OFF_EL);
+  Pointer.setZeroPosition(HOME_OFF_AZ,HOME_OFF_EL);
   
   report_loop = millis();
   movement_loop = millis();
