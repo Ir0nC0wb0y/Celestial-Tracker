@@ -55,7 +55,7 @@ void Homing::goHome() {
   
   //set motor speed
   Stepper_Az.setSpeed(HOMING_SPEED_FAST);
-  Stepper_El.setSpeed(HOMING_SPEED_FAST);
+  Stepper_El.setSpeed(-1 * HOMING_SPEED_FAST);
 
   //set state machine
   _homingStateAz = 1;

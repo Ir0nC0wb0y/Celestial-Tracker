@@ -17,8 +17,8 @@ AccelStepper Stepper_El(HALFSTEP,PIN_EL_A,PIN_EL_B,PIN_EL_C,PIN_EL_D);
 float Az_angle = 0;
 float El_angle = 0;
 
-#define REPORT_TIME 1000
-#define MOVEMENT_TIME 2000
+#define REPORT_TIME 5000
+//#define MOVEMENT_TIME 2000
 unsigned long report_loop = 0;
 unsigned long movement_loop = 0;
 
@@ -39,10 +39,9 @@ float cmdAz{};
 float cmdEl{};
 
 
-#define ISS_UPDATE_TIME 5000
+#define ISS_UPDATE_TIME 2000
 unsigned long ISS_update = 0;
 lla WhereISS;
-//WhereISS = WhereIsTheISS();
 
 
 void setup() {
@@ -57,8 +56,6 @@ void setup() {
   //wm.setMinimumSignalQuality(20);
   bool res;
   res = wm.autoConnect("CelestialTracker"); 
-  //res = wm.autoConnect("CelestialTracker","optional_pass"); // the same as above, but with an optional password
-
   if (res) {
     Serial.println("WiFi Connected Successfully!");
   } else {
@@ -66,10 +63,7 @@ void setup() {
     ESP.restart();
   }
   
-  // Pointer Setup
-  Pointer.SetAccumulation(5.0,5.0);
-
-
+  
   /////////////////////////////////////////////////////////////
   // Tracker API Setup
   trkLLA[0] = TRACKER_LATITUDE_DEG;   // tracker latitude, deg
@@ -102,12 +96,14 @@ void setup() {
   while (!home.isHomed()) {
     home.runHoming();
   }
-  // set current position to 0 (not sure what functions this uses for now)
+  
+  // Pointer Setup
+  Pointer.SetAccumulation(5.0,5.0);
   Pointer.MoveTo(HOME_OFF_AZ,HOME_OFF_EL);
   Pointer.setZeroPosition(0,0);
   
   report_loop = millis();
-  movement_loop = millis();
+  //movement_loop = millis();
   ISS_update = millis();
 
 }
@@ -154,45 +150,3 @@ void loop() {
   Stepper_El.run();
   
 }
-
-
-/*
-if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0 && movement_loop <= millis()) {
-    // Move Random Angle (not go to)
-    Stepper_Az.setCurrentPosition(0);
-    Stepper_El.setCurrentPosition(0);
-    int az_angle = random(0,5);
-    int el_angle = random(0,5);
-    Pointer.MoveDirect(az_angle,el_angle);
-    Stepper_Az.moveTo(Pointer.getStepsAz());
-    Stepper_El.moveTo(Pointer.getStepsEl());
-    Stepper_Az.setMaxSpeed(Pointer.getSpeedAz());
-    Stepper_El.setMaxSpeed(Pointer.getSpeedEl());
-    Serial.print("Az Angle, El Angle, Az Steps, El Steps, Az Speed, El Speed: ");
-    Serial.print(az_angle); Serial.print(" , ");
-    Serial.print(el_angle); Serial.print(" , ");
-    Serial.print(Pointer.getStepsAz()); Serial.print(" , ");
-    Serial.print(Pointer.getStepsEl()); Serial.print(" , ");
-    Serial.print(Pointer.getSpeedAz()); Serial.print(" , ");
-    Serial.print(Pointer.getSpeedEl()); Serial.println();
-
-    movement_loop = MOVEMENT_TIME + millis();
-  }
-
-  // Test Tracker API
-  //trkLLA[0] = 0.0f;   // tracker latitude, deg
-  //trkLLA[1] = 0.0f;   // tracker longitude, deg
-  //trkLLA[2] = 0.0f;   // tracker altitude, km
-
-  //satLLA[0] = -2.0f;   // satellite latitude, deg
-  //satLLA[1] = 0.1f;   // satellite longitude, deg
-  //satLLA[2] = 400.0f; // satellite altitude, km
-
-  //trkDir[0] = 0.0f;   // tracker azimuth, deg
-  //trkDir[1] = 45.0f;  // tracker elevation, deg
-
-  //trackerApiUpdate(trkLLA, satLLA, trkDir);
-  //cmdAz = trackerApiGetAzimuth();
-  //cmdEl = trackerApiGetElevation();
-
-  */
