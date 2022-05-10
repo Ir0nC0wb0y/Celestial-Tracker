@@ -25,6 +25,10 @@ unsigned long movement_loop = 0;
 #define HOME_OFF_AZ 0.0  // Offset in homing for Az
 #define HOME_OFF_EL 0.0  // Offset in homing for El
 
+#define TRACKER_LATITUDE_DEG 30.481320f
+#define TRACKER_LONGITUDE_DEG -86.410710f
+#define TRACKER_ALT_HAE_KM 0.0f
+
 Position Pointer;
 Homing home;
 
@@ -71,7 +75,9 @@ void setup() {
 
   /////////////////////////////////////////////////////////////
   // Tracker API Setup
-  // set tracker's lat, long, alt, heading
+  trkLLA[0] = TRACKER_LATITUDE_DEG;   // tracker latitude, deg
+  trkLLA[1] = TRACKER_LONGITUDE_DEG;  // tracker longitude, deg
+  trkLLA[2] = TRACKER_ALT_HAE_KM;     // tracker altitude, km
   
 
   // Setup Endstop Pins
@@ -111,23 +117,36 @@ void setup() {
 void loop() {
 // Change direction once the motor reaches target position
   if ( millis() >= ISS_update ) {
+    // Get ISS Location
     WhereISS = WhereIsTheISS(); // uncomment when below section exists
-    /////////////////////////////////////////////////////////////////
-    ///////////// AUSTIN PUT YOUR CRAP HERE /////////////////////////
-    /////////////////////////////////////////////////////////////////
-    float move_Az = Pointer.getCurrentAz() + random(-15,15); // push the Az location to move to here
-    float move_El = Pointer.getCurrentEl() + random(-15,15); // push the El location to move to here
+
+    //////////////////////////////////////////////////////////////////////
+    // Tracker API
+    satLLA[0] = WhereISS.latitude;      // satellite latitude, deg
+    satLLA[1] = WhereISS.longitude;     // satellite longitude, deg
+    satLLA[2] = WhereISS.altitude;      // satellite altitude, km
+
+    trkDir[0] = Pointer.getCurrentAz(); // tracker azimuth, deg
+    trkDir[1] = Pointer.getCurrentEl(); // tracker elevation, deg
+
+    trackerApiUpdate(trkLLA, satLLA, trkDir);
+
+    float move_Az = trackerApiGetAzimuth();   // degrees
+    float move_El = trackerApiGetElevation(); // degrees
+    //////////////////////////////////////////////////////////////////////
+
+    //float move_Az = Pointer.getCurrentAz() + (float)random(15,15); // push the Az location to move to here
+    //float move_El = Pointer.getCurrentEl() + (float)random(15,15); // push the El location to move to here
     Serial.print("move Az,El: "); Serial.print(move_Az); Serial.print(" , "); Serial.println(move_El);
     Pointer.AccumulateMove(move_Az,move_El);
-    
     ISS_update = millis() + ISS_UPDATE_TIME;
   }
   
   if ( millis() >= report_loop ) {
     Serial.print("Current Position (Az, El): ");
-    Serial.print(Pointer.getCurrentAz());
+    Serial.print(Stepper_Az.currentPosition());
     Serial.print(" , ");
-    Serial.print(Pointer.getCurrentEl());
+    Serial.print(Stepper_El.currentPosition());
     Serial.println();
     report_loop = millis() + REPORT_TIME;
   }
