@@ -1,7 +1,7 @@
 #include "TrackerApi.h"
+#ifdef TRACKER_SOURCE_CODE
 #include "../../Celestial_Tracker/CelestialTracker.h"
 
-#ifdef TRACKER_SOURCE_CODE
 CelestialTracker tracker{};
 
 void trackerApiUpdate(float trackerLLADegKm[3], float satelliteLLADegKm[3], float trackerDirsAzElDeg[2]) {
