@@ -1,31 +1,41 @@
-#pragma once
+//////////////////////////////////////////////////////////////////////////////////
+// @file: TrackerApi.h
+//
+// @brief: Tracker API library header
+//
+// @details: 
+//
+// @ingroup: Celestial Tracker
+//
+// @author: Austin M. Ottaway
+//////////////////////////////////////////////////////////////////////////////////
+#ifndef TRACKER_API_H
+#define TRACKER_API_H
+//********************************************************************************
+// Macro Definitions
+#define TRACKER_API_UTILIZE_SRC  // define when using TrackerApi source code (e.g. Arduino upload event)
+//#define TRACKER_API_DLL_EXPORTS  // define when building a new TrackerApi dll
+//#define TRACKER_API_DLL_IMPORTS  // define when using TrackerApi dll
 
-#define TRACKER_SOURCE_CODE // define this if using source instead of dll
-//#define TRACKER_DLL_EXPORTS // define this when building a new dll (overrides above macro)
-
-#ifdef TRACKER_DLL_EXPORTS
-// Protection against potential user error;
-// TRACKER_STATIC_LIB and TRACKER_DLL_EXPORTS
-// must not be both defined at the same time
-#ifdef TRACKER_SOURCE_CODE
-#undef TRACKER_SOURCE_CODE
+#ifndef TRACKER_API_UTILIZE_SRC
+#ifdef TRACKER_API_DLL_EXPORTS
+#define TRACKER_API_SOURCE_CODE  // gives permission to compile TrackerApi src
+#define TRACKER_API __declspec(dllexport)  // dll exports declaration
 #endif
+#ifdef TRACKER_API_DLL_IMPORTS
+#define TRACKER_API __declspec(dllimport)  // dll imports declaration
 #endif
-
-#ifndef TRACKER_SOURCE_CODE
-// Distinguish between DLL export or import declaration
-#ifdef TRACKER_DLL_EXPORTS
-#define TRACKER_API __declspec(dllexport)
 #else
-#define TRACKER_API __declspec(dllimport)
+#define TRACKER_API_SOURCE_CODE  // gives permission to compile TrackerApi src
+#define TRACKER_API  // empty declaration (no dll being built or used)
 #endif
-#else
-// Define API with no DLL specification
-#define TRACKER_API
+//********************************************************************************
+
+// API Function Declarations
+extern "C" {
+    TRACKER_API void trackerApiUpdate(float trackerLLADegKm[3], 
+        float satelliteLLADegKm[3], float trackerDirsAzElDeg[2]);
+    TRACKER_API float trackerApiGetAzimuth();
+    TRACKER_API float trackerApiGetElevation();
+}
 #endif
-
-extern "C" TRACKER_API void trackerApiUpdate(float trackerLLADegKm[3], float satelliteLLADegKm[3], float trackerDirsAzElDeg[2]);
-
-extern "C" TRACKER_API float trackerApiGetAzimuth();
-
-extern "C" TRACKER_API float trackerApiGetElevation();

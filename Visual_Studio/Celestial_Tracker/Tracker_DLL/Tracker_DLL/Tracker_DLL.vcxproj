@@ -140,15 +140,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Celestial_Tracker\CelestialTracker.cpp" />
+    <ClCompile Include="..\..\Celestial_Tracker\TrackerApi.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="TrackerApi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Celestial_Tracker\CelestialTracker.h" />
+    <ClInclude Include="..\..\Celestial_Tracker\TrackerApi.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="TrackerApi.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

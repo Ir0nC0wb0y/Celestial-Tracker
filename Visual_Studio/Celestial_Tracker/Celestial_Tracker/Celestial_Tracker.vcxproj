@@ -139,13 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Tracker_DLL\Tracker_DLL\TrackerApi.cpp" />
     <ClCompile Include="CelestialTracker.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="TrackerApi.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Tracker_DLL\Tracker_DLL\TrackerApi.h" />
     <ClInclude Include="CelestialTracker.h" />
+    <ClInclude Include="TrackerApi.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tracker_DLL.dll" />

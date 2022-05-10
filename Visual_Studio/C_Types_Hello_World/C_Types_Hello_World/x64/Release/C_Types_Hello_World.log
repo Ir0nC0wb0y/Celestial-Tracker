@@ -4,6 +4,6 @@
      Creating library C:\Users\Austin\Documents\GitHub\Celestial-Tracker\Visual_Studio\C_Types_Hello_World\x64\Release\C_Types_Hello_World.lib and object C:\Users\Austin\Documents\GitHub\Celestial-Tracker\Visual_Studio\C_Types_Hello_World\x64\Release\C_Types_Hello_World.exp
   Generating code
   Previous IPDB not found, fall back to full compilation.
-  All 22 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 23 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   C_Types_Hello_World.vcxproj -> C:\Users\Austin\Documents\GitHub\Celestial-Tracker\Visual_Studio\C_Types_Hello_World\x64\Release\C_Types_Hello_World.dll
