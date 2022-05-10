@@ -1,0 +1,109 @@
+////////////////////////////////////////////////////////////
+//                                                        //
+//                 C++ STYLE CONVENTION                   //
+//                                                        //
+//              By: InfinitAmo & IronCowboy               //
+//                                                        //
+////////////////////////////////////////////////////////////
+
+                    *** Disclaimer ***
+                  
+The coding style presented in this document is not intended to              
+be set in stone or forced upon the programmer. It is highly                   
+recommended that the programmer adhere to this style convention                   
+as closely as possible to encourage consistent and clean code                  
+throughout the entire project/collaboration. Anywhere the    
+programmer deems it necessary to "break the rules" may do so
+if a brief alternative makes more sense to use than using the
+convention as orginally intended.                  
+                     
+////////////////////////////////////////////////////////////
+
+Files: All file names must be lowercase separated words with underscore (snake_case)
+       e.g. my_class.cpp  my_class.h  main.cpp
+
+////////////////////////////////////////////////////////////
+
+Macros: #define PI_ROUNDED 3.0 (all caps with underscore between words)
+
+////////////////////////////////////////////////////////////
+
+Variables: int variable_one; (name format is snake_case)
+           int _variable_one; (class member has prefix underscore)
+ 
+//////////////////////////////////////////////////////////// 
+          
+Constants: Make a MACRO or define as a constexpr (camelCase) or declare with const (camelCase)
+           and preferably define under a namespace if the latter two
+
+           #define RADIANS_TO_DEGREES 57.296
+
+           namespace unit_conv {
+               const float radiansToDegrees = 57.296f;
+               constexpr float degreesToRadians() { return 0.017453f; };
+           }
+
+////////////////////////////////////////////////////////////
+
+Namespaces: Must be named in the same style as variables (snake_case)
+
+            namespace my_name_space {
+                char letter = 'b';
+            }
+
+////////////////////////////////////////////////////////////
+
+Types: MyClass (PascalCase)
+       MyInteger
+       MyFloat
+
+////////////////////////////////////////////////////////////   
+       
+Functions: void TrackerApiUpdate(); (PascalCase just like types)
+           void _TrackerApiUpdate(); (prefix underscore if private)
+
+////////////////////////////////////////////////////////////         
+           
+Enumerations: Make the enum class name PascalCase and the members camelCase (like const or constexpr)
+
+              enum class RoyalCards {
+                  tenCard = 0,
+                  jackCard,
+                  queenCard,
+                  kingCard,
+                  aceCard
+              };
+
+////////////////////////////////////////////////////////////             
+              
+Getters: int GetVariableOne() const; (same name style as functions)
+         int variable_one() const; (may also name same as variable)   
+
+////////////////////////////////////////////////////////////         
+         
+Setters: void SetVariableOne(int variable_one); (same name style as functions)
+         void variable_one(int variable_one); (may also name same as variable)          
+
+////////////////////////////////////////////////////////////         
+         
+Headers: Every header file must have either "#pragma once" or a header guard
+         to protect against misuse (e.g. including header more than once in a file
+         could potentially break the program)       
+         
+         Below is an example of a header guard for a file called my_class.h:
+         
+         #ifndef MY_CLASS_H  <-- Begin Header Guard
+         #define MY_CLASS_H
+         
+         class MyClass {
+         public:
+             MyClass();
+             ~MyClass();
+             
+         private:
+             ...
+         };
+         
+         #endif  <-- End Header Guard
+
+////////////////////////////////////////////////////////////               
