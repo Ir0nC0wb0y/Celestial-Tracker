@@ -110,18 +110,19 @@ void loop() {
     /////////////////////////////////////////////////////////////////
     ///////////// AUSTIN PUT YOUR CRAP HERE /////////////////////////
     /////////////////////////////////////////////////////////////////
-    float move_Az = Pointer.getCurrentAz() + (float)random(15,15); // push the Az location to move to here
-    float move_El = Pointer.getCurrentEl() + (float)random(15,15); // push the El location to move to here
+    float move_Az = Pointer.getCurrentAz() + random(-15,15); // push the Az location to move to here
+    float move_El = Pointer.getCurrentEl() + random(-15,15); // push the El location to move to here
     Serial.print("move Az,El: "); Serial.print(move_Az); Serial.print(" , "); Serial.println(move_El);
     Pointer.AccumulateMove(move_Az,move_El);
+    
     ISS_update = millis() + ISS_UPDATE_TIME;
   }
   
   if ( millis() >= report_loop ) {
     Serial.print("Current Position (Az, El): ");
-    Serial.print(Stepper_Az.currentPosition());
+    Serial.print(Pointer.getCurrentAz());
     Serial.print(" , ");
-    Serial.print(Stepper_El.currentPosition());
+    Serial.print(Pointer.getCurrentEl());
     Serial.println();
     report_loop = millis() + REPORT_TIME;
   }
