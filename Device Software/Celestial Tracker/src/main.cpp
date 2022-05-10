@@ -22,9 +22,6 @@ float El_angle = 0;
 unsigned long report_loop = 0;
 unsigned long movement_loop = 0;
 
-#define HOME_OFF_AZ 0.0  // Offset in homing for Az
-#define HOME_OFF_EL 0.0  // Offset in homing for El
-
 #define TRACKER_LATITUDE_DEG 30.481320f
 #define TRACKER_LONGITUDE_DEG -86.410710f
 #define TRACKER_ALT_HAE_KM 0.0f
@@ -106,7 +103,8 @@ void setup() {
     home.runHoming();
   }
   // set current position to 0 (not sure what functions this uses for now)
-  Pointer.setZeroPosition(HOME_OFF_AZ,HOME_OFF_EL);
+  Pointer.MoveTo(HOME_OFF_AZ,HOME_OFF_EL);
+  Pointer.setZeroPosition(0,0);
   
   report_loop = millis();
   movement_loop = millis();
@@ -144,9 +142,9 @@ void loop() {
   
   if ( millis() >= report_loop ) {
     Serial.print("Current Position (Az, El): ");
-    Serial.print(Stepper_Az.currentPosition());
+    Serial.print(Pointer.getCurrentAz());
     Serial.print(" , ");
-    Serial.print(Stepper_El.currentPosition());
+    Serial.print(Pointer.getCurrentEl());
     Serial.println();
     report_loop = millis() + REPORT_TIME;
   }

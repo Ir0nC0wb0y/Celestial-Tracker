@@ -12,7 +12,7 @@ lla WhereIsTheISS() {
     int httpResponseCode = http.GET();
     if (httpResponseCode>0) {
       //Serial.print("HTTP Response code: ");
-      Serial.println(httpResponseCode);
+      //Serial.println(httpResponseCode);
       ISS_JSON = http.getString();
       //Serial.println(ISS_JSON);
     }

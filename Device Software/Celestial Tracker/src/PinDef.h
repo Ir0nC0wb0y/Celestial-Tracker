@@ -23,6 +23,9 @@
 
   #define PIN_H_AZ 35 // Connected to SIG pin of Az Endstop
   #define PIN_H_EL 34 // Connected to SIG pin of El Endstop
+
+  #define HOME_OFF_AZ   0.0  // Offset in homing for Az
+  #define HOME_OFF_EL -90.0  // Offset in homing for El
 #endif
 
 #ifdef ENV_2
@@ -38,6 +41,9 @@
   
   #define PIN_H_AZ 35 // Connected to SIG pin of Az Endstop
   #define PIN_H_EL 34 // Connected to SIG pin of El Endstop
+
+  #define HOME_OFF_AZ 0.0  // Offset in homing for Az
+  #define HOME_OFF_EL 0.0  // Offset in homing for El
 #endif
 
 extern AccelStepper Stepper_Az;
