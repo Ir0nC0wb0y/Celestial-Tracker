@@ -37,6 +37,13 @@ float trkDir[2]{};
 float cmdAz{};
 float cmdEl{};
 
+
+#define ISS_UPDATE_TIME 5000
+unsigned long ISS_update = 0;
+lla WhereISS;
+//WhereISS = WhereIsTheISS();
+
+
 void setup() {
 
   Serial.begin(115200);
@@ -58,9 +65,9 @@ void setup() {
     ESP.restart();
   }
   
-  lla WhereISS;
-  WhereISS = WhereIsTheISS();
-  Serial.print("ISS (lat,long,alt): "); Serial.print(WhereISS.latitude); Serial.print(" , "); Serial.print(WhereISS.longitude); Serial.print(" , "); Serial.println(WhereISS.altitude);
+  // Pointer Setup
+  Pointer.SetAccumulation(5.0,5.0);
+  
 
   // Setup Endstop Pins
   pinMode(PIN_H_AZ,INPUT_PULLUP);
@@ -92,11 +99,42 @@ void setup() {
   
   report_loop = millis();
   movement_loop = millis();
+  ISS_update = millis();
+
 }
 
 void loop() {
 // Change direction once the motor reaches target position
-  if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0 && movement_loop <= millis()) {
+  if ( millis() >= ISS_update ) {
+    //WhereISS = WhereIsTheISS(); // uncomment when below section exists
+    /////////////////////////////////////////////////////////////////
+    ///////////// AUSTIN PUT YOUR CRAP HERE /////////////////////////
+    /////////////////////////////////////////////////////////////////
+    float move_Az = Pointer.getCurrentAz() + (float)random(15,15); // push the Az location to move to here
+    float move_El = Pointer.getCurrentEl() + (float)random(15,15); // push the El location to move to here
+    Serial.print("move Az,El: "); Serial.print(move_Az); Serial.print(" , "); Serial.println(move_El);
+    Pointer.AccumulateMove(move_Az,move_El);
+    ISS_update = millis() + ISS_UPDATE_TIME;
+  }
+  
+  if ( millis() >= report_loop ) {
+    Serial.print("Current Position (Az, El): ");
+    Serial.print(Stepper_Az.currentPosition());
+    Serial.print(" , ");
+    Serial.print(Stepper_El.currentPosition());
+    Serial.println();
+    report_loop = millis() + REPORT_TIME;
+  }
+
+  // Move the motor one step
+  Stepper_Az.run();
+  Stepper_El.run();
+  
+}
+
+
+/*
+if (Stepper_Az.distanceToGo() == 0 && Stepper_El.distanceToGo() == 0 && movement_loop <= millis()) {
     // Move Random Angle (not go to)
     Stepper_Az.setCurrentPosition(0);
     Stepper_El.setCurrentPosition(0);
@@ -117,20 +155,7 @@ void loop() {
 
     movement_loop = MOVEMENT_TIME + millis();
   }
-  
-  if ( millis() >= report_loop ) {
-    Serial.print("Current Position (Az, El): ");
-    Serial.print(Stepper_Az.currentPosition());
-    Serial.print(" , ");
-    Serial.print(Stepper_El.currentPosition());
-    Serial.println();
-    report_loop = millis() + REPORT_TIME;
-  }
 
-  // Move the motor one step
-  Stepper_Az.run();
-  Stepper_El.run();
-  
   // Test Tracker API
   //trkLLA[0] = 0.0f;   // tracker latitude, deg
   //trkLLA[1] = 0.0f;   // tracker longitude, deg
@@ -146,4 +171,5 @@ void loop() {
   //trackerApiUpdate(trkLLA, satLLA, trkDir);
   //cmdAz = trackerApiGetAzimuth();
   //cmdEl = trackerApiGetElevation();
-}
+
+  */

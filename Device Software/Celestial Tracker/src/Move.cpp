@@ -5,10 +5,12 @@ Position::Position(void) {
 
 bool Position::AccumulateMove(float new_Az, float new_El) {
   // Set Up
-  _angle_Az_new = new_Az;
-  _angle_El_new = new_El;
+  //_angle_Az_new = new_Az;
+  //_angle_El_new = new_El;
+  Serial.print("Accumulation: "); Serial.print(abs(new_Az - _angle_Az)); Serial.print(" , "); Serial.println(abs(new_El - _angle_El));
   
-  if ( abs(_angle_Az_new - _angle_Az) > _min_Az | abs(_angle_El_new - _angle_El) > _min_El ) {
+  if ( abs(new_Az - _angle_Az) > _min_Az | abs(new_El - _angle_El) > _min_El ) {
+    Serial.println("Moving to new position (Az,El): "); Serial.print(new_Az); Serial.print(" , "); Serial.println(new_El);
     MoveTo(new_Az,new_El);
     return true;
   } else {
