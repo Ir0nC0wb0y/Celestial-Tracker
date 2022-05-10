@@ -7,15 +7,14 @@ lla WhereIsTheISS() {
   lla ISS_lla;
   
   //if (WiFi.status() = WL_CONNECTED) {
-    //ISS_location = GET_Request("https://api.wheretheiss.at/v1/satellites/25544");
     HTTPClient http;
     http.begin("https://api.wheretheiss.at/v1/satellites/25544");
     int httpResponseCode = http.GET();
     if (httpResponseCode>0) {
-      Serial.print("HTTP Response code: ");
+      //Serial.print("HTTP Response code: ");
       Serial.println(httpResponseCode);
       ISS_JSON = http.getString();
-      Serial.println(ISS_JSON);
+      //Serial.println(ISS_JSON);
     }
     else {
       Serial.print("Error code: ");
@@ -23,7 +22,7 @@ lla WhereIsTheISS() {
     }
     http.end(); // Free resources
     
-    Serial.println("Starting JSON Deserialization");
+    //Serial.println("Starting JSON Deserialization");
     // Do something with the data
     StaticJsonDocument<500> ISS_doc;
     DeserializationError error = deserializeJson(ISS_doc, ISS_JSON);
@@ -31,11 +30,10 @@ lla WhereIsTheISS() {
     if (error) {
       Serial.println("Parsing input failed!");
     } else {
-      Serial.println("Getting JSON Parameters");
       ISS_lla.latitude = ISS_doc["latitude"];
       ISS_lla.longitude = ISS_doc["longitude"];
       ISS_lla.altitude = ISS_doc["altitude"]; // comes in km
-      Serial.println("Parsed LLA");
+      //Serial.println("Parsed LLA");
     }
     
   /*

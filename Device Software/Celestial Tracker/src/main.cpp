@@ -67,6 +67,11 @@ void setup() {
   
   // Pointer Setup
   Pointer.SetAccumulation(5.0,5.0);
+
+
+  /////////////////////////////////////////////////////////////
+  // Tracker API Setup
+  // set tracker's lat, long, alt, heading
   
 
   // Setup Endstop Pins
@@ -106,7 +111,7 @@ void setup() {
 void loop() {
 // Change direction once the motor reaches target position
   if ( millis() >= ISS_update ) {
-    //WhereISS = WhereIsTheISS(); // uncomment when below section exists
+    WhereISS = WhereIsTheISS(); // uncomment when below section exists
     /////////////////////////////////////////////////////////////////
     ///////////// AUSTIN PUT YOUR CRAP HERE /////////////////////////
     /////////////////////////////////////////////////////////////////
