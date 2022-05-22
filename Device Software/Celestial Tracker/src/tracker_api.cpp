@@ -11,12 +11,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 //********************************************************************************
 // Include Files
-#include "TrackerApi.h"
+#include "tracker_api.h"
 #ifdef TRACKER_API_SOURCE_CODE
-#include "CelestialTracker.h"
+#include "celestial_tracker.h"
 
 // Global Variables
-CelestialTracker tracker{};
+static CelestialTracker tracker{};
 //********************************************************************************
 
 //------------------------------------------------------------
@@ -26,8 +26,8 @@ CelestialTracker tracker{};
 //
 // @details: 
 //------------------------------------------------------------
-void trackerApiUpdate(float trackerLLADegKm[3], float satelliteLLADegKm[3], float trackerDirsAzElDeg[2]) {
-    tracker.update(trackerLLADegKm, satelliteLLADegKm, trackerDirsAzElDeg);
+void TrackerApiUpdate(float trackerLLADegKm[3], float satelliteLLADegKm[3], float trackerDirsAzElDeg[2]) {
+    tracker.Update(trackerLLADegKm, satelliteLLADegKm, trackerDirsAzElDeg);
     return;
 }
 
@@ -38,8 +38,8 @@ void trackerApiUpdate(float trackerLLADegKm[3], float satelliteLLADegKm[3], floa
 //
 // @details: 
 //------------------------------------------------------------
-float trackerApiGetAzimuth() {
-    return tracker.getCmdAzDeg();
+float TrackerApiGetAzimuth() {
+    return tracker.GetCmdAzDeg();
 }
 
 //------------------------------------------------------------
@@ -49,7 +49,7 @@ float trackerApiGetAzimuth() {
 //
 // @details: 
 //------------------------------------------------------------
-float trackerApiGetElevation() {
-    return tracker.getCmdElDeg();
+float TrackerApiGetElevation() {
+    return tracker.GetCmdElDeg();
 }
 #endif

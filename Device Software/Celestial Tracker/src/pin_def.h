@@ -46,5 +46,5 @@
   #define HOME_OFF_EL 0.0  // Offset in homing for El
 #endif
 
-extern AccelStepper Stepper_Az;
-extern AccelStepper Stepper_El;
+extern AccelStepper stepper_az;
+extern AccelStepper stepper_el;

@@ -33,9 +33,9 @@
 
 // API Function Declarations
 extern "C" {
-    TRACKER_API void trackerApiUpdate(float trackerLLADegKm[3], 
+    TRACKER_API void TrackerApiUpdate(float trackerLLADegKm[3], 
         float satelliteLLADegKm[3], float trackerDirsAzElDeg[2]);
-    TRACKER_API float trackerApiGetAzimuth();
-    TRACKER_API float trackerApiGetElevation();
+    TRACKER_API float TrackerApiGetAzimuth();
+    TRACKER_API float TrackerApiGetElevation();
 }
 #endif

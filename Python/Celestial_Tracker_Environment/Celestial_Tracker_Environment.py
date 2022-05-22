@@ -62,8 +62,8 @@ while(True):
     trkLonDeg = -86.410710
     trkAltKm = 0.0
     
-    trkAzDeg = 0.0
-    trkElDeg = 45.0
+    trkAzDeg = -131.0
+    trkElDeg = -62.0
     
     trkLLA = (ctypes.c_float * 3)(*[trkLatDeg, trkLonDeg, trkAltKm])
     trkDir = (ctypes.c_float * 2)(*[trkAzDeg, trkElDeg])

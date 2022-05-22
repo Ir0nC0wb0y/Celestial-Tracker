@@ -2,14 +2,13 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-#include <ArduinoJSON.h>
+#include <ArduinoJson.h>
 
 
-class lla {
-  public:
+typedef struct {
     float latitude = 0.0;
     float longitude = 0.0;
     float altitude = 0.0;
-};
+} PositionLLA;
 
-lla WhereIsTheISS();
+PositionLLA WhereIsTheISS();
