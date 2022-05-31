@@ -12,11 +12,11 @@
 class Pointer {
 public:
     Pointer();
-    bool AccumulateMove(float move_Az, float move_El);
-    void SetAccumulation(float min_Az, float min_El);
-    void MoveTo(float angle_Az, float angle_El);
-    void MoveDirect(float move_Az, float move_El);
-    void SetZeroPosition(float angleAz, float angleEl);
+    bool AccumulateMove(float move_az, float move_el);
+    void SetAccumulation(float min_az, float min_el);
+    void MoveTo(float angle_az, float angle_el);
+    void MoveDirect(float move_az, float move_el);
+    void SetZeroPosition(float angle_az, float angle_el);
     int GetStepsAz() const;
     int GetStepsEl() const;
     int GetSpeedAz() const;
@@ -25,21 +25,21 @@ public:
     int GetCurrentEl() const;
 
 private:
-    void _CalcSteps(float move_Az, float move_El);
+    void _CalcSteps(float move_az, float move_el);
     void _CalcSpeed();
 
-    float _angle_Az = 0; // Current Az position
-    float _angle_El = 0; // Current El position
-    float _angle_Az_last = 0;
-    float _angle_El_last = 0;
-    float _angle_Az_new = 0;
-    float _angle_El_new = 0;
-    int _steps_Az = 0;
-    int _steps_El = 0;
-    float _move_Az = 0;
-    float _move_El = 0;
-    int _speed_Az = 0;
-    int _speed_El = 0;
-    float _min_Az = 0.0;
-    float _min_El = 0.0;
+    float _angle_az = 0; // Current Az position
+    float _angle_el = 0; // Current El position
+    float _angle_az_last = 0;
+    float _angle_el_last = 0;
+    float _angle_az_new = 0;
+    float _angle_el_new = 0;
+    int _steps_az = 0;
+    int _steps_el = 0;
+    float _move_az = 0;
+    float _move_el = 0;
+    int _speed_az = 0;
+    int _speed_el = 0;
+    float _min_az = 0.0;
+    float _min_el = 0.0;
 };
