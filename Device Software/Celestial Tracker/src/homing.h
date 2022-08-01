@@ -4,8 +4,10 @@
 #define HOMING_SPEED_FAST   800
 #define HOMING_SPEED_SLOW    50
 #define HOMING_RETREAT      435  // Roughly 10 degrees. This is untested
+#define HOMING_DIR_AZ         1
+#define HOMING_DIR_EL         1
 
-// Possible functions
+
 class Homing {
 public:
     Homing();

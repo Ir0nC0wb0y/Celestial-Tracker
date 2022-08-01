@@ -14,6 +14,7 @@
 
 #define REPORT_TIME 5000
 //#define MOVEMENT_TIME 2000
+#define CALIBRATION_TIME 2000 // time to remain in cardinal directions to calibrate homing
 
 #define TRACKER_LATITUDE_DEG 30.481320f
 #define TRACKER_LONGITUDE_DEG -86.410710f
@@ -52,8 +53,8 @@ void setup() {
 
     // Setup WiFi
     WiFi.mode(WIFI_STA);
-    if (wm_nonblocking) 
-        wm.setConfigPortalBlocking(false);
+    //wm.resetSettings();
+    //if (wm_nonblocking) wm.setConfigPortalBlocking(false);
 
     wm.setConnectTimeout(20);
     wm.setConfigPortalTimeout(300);
@@ -99,12 +100,80 @@ void setup() {
     home.GoHome();
     while (!home.IsHomed()) {
         home.RunHoming();
+        yield();
     }
 
     // Pointer Setup
     pointer.SetAccumulation(5.0, 5.0);
     pointer.MoveTo(HOME_OFF_AZ, HOME_OFF_EL);
+    while (stepper_az.distanceToGo() !=0 | stepper_el.distanceToGo() != 0) {
+        stepper_az.run();
+        stepper_el.run();
+        yield();
+    }
     pointer.SetZeroPosition(0,0);
+
+    // Go to reference points
+    Serial.println("Move to 0,0");
+    pointer.MoveTo(0,0);
+    while (stepper_az.distanceToGo() !=0 | stepper_el.distanceToGo() != 0) {
+        stepper_az.run();
+        stepper_el.run();
+        yield();
+    }
+    stepper_az.disableOutputs();
+    stepper_el.disableOutputs();
+    delay(CALIBRATION_TIME);
+    Serial.println("Move to 90,0");
+    pointer.MoveTo(90,0);
+    while (stepper_az.distanceToGo() !=0 | stepper_el.distanceToGo() != 0) {
+        stepper_az.run();
+        stepper_el.run();
+        yield();
+    }
+    stepper_az.disableOutputs();
+    stepper_el.disableOutputs();
+    delay(CALIBRATION_TIME);
+    Serial.println("Move to 180,0");
+    pointer.MoveTo(180,0);
+    while (stepper_az.distanceToGo() !=0 | stepper_el.distanceToGo() != 0) {
+        stepper_az.run();
+        stepper_el.run();
+        yield();
+    }
+    stepper_az.disableOutputs();
+    stepper_el.disableOutputs();
+    delay(CALIBRATION_TIME);
+    Serial.println("Move to 270,0");
+    pointer.MoveTo(270,0);
+    while (stepper_az.distanceToGo() !=0 | stepper_el.distanceToGo() != 0) {
+        stepper_az.run();
+        stepper_el.run();
+        yield();
+    }
+    stepper_az.disableOutputs();
+    stepper_el.disableOutputs();
+    delay(CALIBRATION_TIME);
+    Serial.println("Move to 0,-90");
+    pointer.MoveTo(0,-90);
+    while (stepper_az.distanceToGo() !=0 | stepper_el.distanceToGo() != 0) {
+        stepper_az.run();
+        stepper_el.run();
+        yield();
+    }
+    stepper_az.disableOutputs();
+    stepper_el.disableOutputs();
+    delay(CALIBRATION_TIME);
+    Serial.println("Move to 0,90");
+    pointer.MoveTo(0,90);
+    while (stepper_az.distanceToGo() !=0 | stepper_el.distanceToGo() != 0) {
+        stepper_az.run();
+        stepper_el.run();
+        yield();
+    }
+    stepper_az.disableOutputs();
+    stepper_el.disableOutputs();
+    delay(CALIBRATION_TIME);
 
     report_loop = millis();
     //movement_loop = millis();
@@ -114,7 +183,7 @@ void setup() {
 // Arduino Loop Routine
 void loop() {
     // Change direction once the motor reaches target position
-    if ( millis() >= ISS_update ) {
+    if ( millis() >= ISS_update  && stepper_az.distanceToGo() == 0 && stepper_el.distanceToGo() == 0) {
         // Get ISS Location
         where_ISS = WhereIsTheISS(); // uncomment when below section exists
 
@@ -152,4 +221,10 @@ void loop() {
     // Move the motor one step
     stepper_az.run();
     stepper_el.run();
+    if (stepper_az.distanceToGo() == 0) {
+        stepper_az.disableOutputs();
+    }
+    if (stepper_el.distanceToGo() == 0) {
+        stepper_el.disableOutputs();
+    }
 }

@@ -63,8 +63,8 @@ void Homing::GoHome() {
     _SetupInterruptEl(true);
 
     //set motor speed
-    stepper_az.setSpeed(HOMING_SPEED_FAST);
-    stepper_el.setSpeed(-1 * HOMING_SPEED_FAST);
+    stepper_az.setSpeed(HOMING_DIR_AZ * HOMING_SPEED_FAST);
+    stepper_el.setSpeed(HOMING_DIR_EL * HOMING_SPEED_FAST);
 
     //set state machine
     _homing_state_az = 1;
@@ -89,19 +89,18 @@ void Homing::RunHoming() {
             stepper_az.runSpeed();
         } else {
             _homing_state_az = 2;
-            stepper_az.setCurrentPosition(0);
-            stepper_az.moveTo(HOMING_RETREAT);
+            stepper_az.move(-1 * HOMING_DIR_AZ * HOMING_RETREAT);
             Serial.println("Moving Az to State 2, Retreat");
         }
         break;
 
     case 2:
-        if (stepper_az.distanceToGo() == 0) {
+        if (stepper_az.distanceToGo() != 0) {
             stepper_az.run();
         } else {
             _homing_state_az = 3;
             int_az = false;
-            stepper_az.setSpeed(HOMING_SPEED_SLOW);
+            stepper_az.setSpeed(HOMING_DIR_AZ * HOMING_SPEED_SLOW);
             Serial.println("Moving Az to State 3, Slow Approach");
         }
         break;
@@ -112,6 +111,7 @@ void Homing::RunHoming() {
         } else {
             _homing_state_az = 0;
             _SetupInterruptAz(false);
+            stepper_az.setCurrentPosition(0);
             Serial.println("Found Home Position: AZ!!");
         }
         break;
@@ -126,19 +126,19 @@ void Homing::RunHoming() {
         if (!int_el) {
             stepper_el.runSpeed();
         } else {
-        _homing_state_el = 2;
-            stepper_el.moveTo(HOMING_RETREAT);
+            _homing_state_el = 2;
+            stepper_el.move(-1 * HOMING_DIR_EL * HOMING_RETREAT);
             Serial.println("Moving El to State 2, Retreat");
         }
         break;
 
     case 2:
-        if (stepper_el.distanceToGo() == 0) {
+        if (stepper_el.distanceToGo() != 0) {
             stepper_el.run();
         } else {
             _homing_state_el = 3;
             int_el = false;
-            stepper_el.setSpeed(HOMING_SPEED_SLOW);
+            stepper_el.setSpeed(HOMING_DIR_EL * HOMING_SPEED_SLOW);
             Serial.println("Moving El to State 3, Slow Approach");
         }
         break;
@@ -149,6 +149,7 @@ void Homing::RunHoming() {
         } else {
             _homing_state_el = 0;
             _SetupInterruptEl(false);
+            stepper_el.setCurrentPosition(0);
             Serial.println("Found Home Position: El!!");
         }
         break;
